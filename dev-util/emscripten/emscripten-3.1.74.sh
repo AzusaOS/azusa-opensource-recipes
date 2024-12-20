@@ -14,9 +14,9 @@ import os
 
 # this helps projects using emscripten find it
 EMSCRIPTEN_ROOT = os.path.expanduser(os.getenv('EMSCRIPTEN') or '/pkg/main/${PKG}.core.${PVRF}') # directory
-BINARYEN_ROOT = os.path.expanduser(os.getenv('BINARYEN_ROOT') or '/pkg/main/dev-util.binaryen.core/bin')
-LLVM_ROOT = os.path.expanduser(os.getenv('LLVM') or '/pkg/main/sys-devel.llvm-git.core/bin') # directory
-CACHE = os.path.expanduser(os.getenv('EM_CACHE') or '/tmp/.emcc')
+BINARYEN_ROOT = os.path.expanduser(os.getenv('BINARYEN_ROOT') or '/pkg/main/dev-util.binaryen.core')
+LLVM_ROOT = os.path.expanduser(os.getenv('LLVM') or '/pkg/main/sys-devel.llvm-git.data/bin') # directory
+CACHE = os.path.expanduser(os.getenv('EM_CACHE') or '/tmp/.emscripten')
 
 # If not specified, defaults to sys.executable.
 #PYTHON = 'python'
