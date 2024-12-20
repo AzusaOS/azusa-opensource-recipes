@@ -16,6 +16,7 @@ import os
 EMSCRIPTEN_ROOT = os.path.expanduser(os.getenv('EMSCRIPTEN') or '/pkg/main/${PKG}.core.${PVRF}') # directory
 BINARYEN_ROOT = os.path.expanduser(os.getenv('BINARYEN_ROOT') or '/pkg/main/dev-util.binaryen.core/bin')
 LLVM_ROOT = os.path.expanduser(os.getenv('LLVM') or '/pkg/main/sys-devel.llvm-full.core/bin') # directory
+CACHE = os.path.expanduser(os.getenv('EM_CACHE') or '/tmp/.emcc')
 
 # If not specified, defaults to sys.executable.
 #PYTHON = 'python'
