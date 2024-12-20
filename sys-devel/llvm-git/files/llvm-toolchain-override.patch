@@ -1,0 +1,28 @@
+--- a/clang/lib/Driver/ToolChains/Linux.cpp	2024-12-16 23:48:31.484573136 +0900
++++ b/clang/lib/Driver/ToolChains/Linux.cpp	2024-12-16 23:50:48.722577378 +0900
+@@ -495,6 +495,7 @@
+     llvm_unreachable("unsupported architecture");
+ 
+   case llvm::Triple::aarch64:
++    return "/pkg/main/sys-libs.glibc.libs.linux.arm64/lib/ld-linux-aarch64.so.1";
+     LibDir = "lib";
+     Loader = "ld-linux-aarch64.so.1";
+     break;
+@@ -594,12 +595,17 @@
+     Loader = "ld64.so.1";
+     break;
+   case llvm::Triple::x86:
++    return "/pkg/main/sys-libs.glibc.libs.linux.386/lib/ld-linux.so.2";
+     LibDir = "lib";
+     Loader = "ld-linux.so.2";
+     break;
+   case llvm::Triple::x86_64: {
+     bool X32 = Triple.isX32();
+ 
++    if (!X32) {
++      return "/pkg/main/sys-libs.glibc.libs.linux.amd64/lib64/ld-linux-x86-64.so.2";
++    }
++
+     LibDir = X32 ? "libx32" : "lib64";
+     Loader = X32 ? "ld-linux-x32.so.2" : "ld-linux-x86-64.so.2";
+     break;

@@ -15,7 +15,7 @@ import os
 # this helps projects using emscripten find it
 EMSCRIPTEN_ROOT = os.path.expanduser(os.getenv('EMSCRIPTEN') or '/pkg/main/${PKG}.core.${PVRF}') # directory
 BINARYEN_ROOT = os.path.expanduser(os.getenv('BINARYEN_ROOT') or '/pkg/main/dev-util.binaryen.core/bin')
-LLVM_ROOT = os.path.expanduser(os.getenv('LLVM') or '/pkg/main/sys-devel.llvm-full.core/bin') # directory
+LLVM_ROOT = os.path.expanduser(os.getenv('LLVM') or '/pkg/main/sys-devel.llvm-git.core/bin') # directory
 CACHE = os.path.expanduser(os.getenv('EM_CACHE') or '/tmp/.emcc')
 
 # If not specified, defaults to sys.executable.
@@ -66,7 +66,10 @@ EOF
 
 # create wrappers that will run the wrappers to run the python stuff
 mkdir bin
-for foo in emcc emcmake; do
+for foo in emcc emcmake emsize emstrip emscons emrun emranlib emnm emdwp emconfigure emar; do
+	if [ ! -f "$foo" ]; then
+		continue
+	fi
 	echo "Creating bin/$foo ..."
 
 	cat >bin/$foo <<EOF
