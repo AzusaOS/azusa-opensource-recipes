@@ -25,6 +25,8 @@ CC="/pkg/main/sys-devel.llvm-full.data/bin/clang"
 CXX="/pkg/main/sys-devel.llvm-full.data/bin/clang++"
 export PATH="/pkg/main/sys-devel.llvm-full.data/bin:$PATH"
 
+LLVM_VERSION=20.0.0
+
 importpkg libxml-2.0 icu-uc sci-mathematics/z3 zlib sys-libs/llvm-libunwind sys-libs/libcxx sys-libs/libcxxabi app-arch/xz sys-libs/ncurses dev-lang/lua
 # -- Could NOT find CursesAndPanel (missing: CURSES_INCLUDE_DIRS CURSES_LIBRARIES PANEL_LIBRARIES) 
 # -- Could NOT find Lua (missing: LUA_LIBRARIES LUA_INCLUDE_DIR) (Required is exact version "5.3")
@@ -59,7 +61,7 @@ CMAKE_OPTS=(
 	# saves a lot of space
 	-DLLVM_BUILD_LLVM_DYLIB=ON
 	-DLLVM_LINK_LLVM_DYLIB=ON
-	-DLLVM_VERSION_SUFFIX=+full
+	-DLLVM_VERSION_SUFFIX="+git$GIT_DATEVER"
 
 	-DZLIB_LIBRARY=/pkg/main/sys-libs.zlib.libs.${OS}.${ARCH}/lib$LIB_SUFFIX/libz.so
 	-DZLIB_INCLUDE_DIR=/pkg/main/sys-libs.zlib.dev.${OS}.${ARCH}/include
@@ -116,7 +118,7 @@ cat >"${D}/pkg/main/${PKG}.data.${PVRF}/config/clang-cxx.cfg" <<EOF
 -nostdinc
 -isystem /pkg/main/${PKG}.core.${PVRF}/include/c++/v1
 -isystem /pkg/main/sys-libs.glibc.dev.linux.amd64/include
--isystem /pkg/main/${PKG}.libs.${PVRF}/lib$LIB_SUFFIX/clang/${PV/.*}/include
+-isystem /pkg/main/${PKG}.libs.${PVRF}/lib$LIB_SUFFIX/clang/${LLVM_VERSION/.*}/include
 -isystem /pkg/main/${PKG}.core.${PVRF}/include/${CHOST}/c++/v1
 
 # allow finding libc++
