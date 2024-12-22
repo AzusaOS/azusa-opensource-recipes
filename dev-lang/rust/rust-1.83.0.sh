@@ -67,6 +67,7 @@ mandir = "/pkg/main/${PKG}.doc.${PVRF}/man"
 codegen-units-std = 1
 optimize = true
 debug = false
+lld = true
 debug-assertions = false
 debug-assertions-std = false
 debuginfo-level = 0
