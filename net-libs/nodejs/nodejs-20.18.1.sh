@@ -13,6 +13,11 @@ ulimit -n 65536
 
 doconflight --shared-cares --shared-libuv --shared-nghttp2 --shared-nghttp2-libpath=$(pkg-config --variable libdir libnghttp2) --shared-openssl --with-snapshot --shared-zlib --with-intl=system-icu
 
+# add -licuuc on top of -licui18n
+sed -i -e "s/'-licui18n'/'-licui18n', '-licuuc'/" config.gypi
+# rebuild
+python tools/gyp_node.py --no-parallel -Dconfiguring_node=1 -Dbuild_type=Release -Dpython=/usr/bin/python3.12 -f make-linux
+
 make -j"$NPROC"
 make install DESTDIR="${D}"
 

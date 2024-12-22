@@ -2,12 +2,15 @@
 source "../../common/init.sh"
 
 get https://github.com/emscripten-core/emscripten/archive/refs/tags/${PV}.tar.gz ${P}.tar.gz
-acheck
+envcheck # use envcheck so we keep network for npm
 
 mkdir -p "${D}/pkg/main"
 mv -v "${S}" "${D}/pkg/main/${PKG}.core.${PVRF}"
 
 cd "${D}/pkg/main/${PKG}.core.${PVRF}"
+
+# install dependencies (acorn, etc)
+npm i
 
 cat >emscripten.config <<EOF
 import os

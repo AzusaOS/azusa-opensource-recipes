@@ -1,7 +1,7 @@
 #!/bin/sh
 source "../../common/init.sh"
 
-get https://c-ares.haxx.se/download/${P}.tar.gz
+get  https://github.com/c-ares/c-ares/releases/download/v${PV}/${P}.tar.gz
 acheck
 
 cd "${T}"

@@ -716,3 +716,23 @@ Libs: -L\${libdir} $LIBS
 Cflags: -I\${includedir}
 EOF
 }
+
+dobin() {
+	install -v -D --preserve-timestamps --target-directory="${D}/pkg/main/${PKG}.core.${PVRF}/bin" "$@"
+}
+
+doman() {
+	# depending on the file's suffix (.1, .2, etc) install into different dir
+	local f
+	for f in "$@"; do
+		local p
+		p="${D}/pkg/main/${PKG}.doc.${PVRF}/man/man${f##*.}"
+		mkdir -p "$p"
+		cp -v -a --target-directory="$p" "$f"
+	done
+}
+
+dodoc() {
+	mkdir -p "${D}/pkg/main/${PKG}.doc.${PVRF}/doc"
+	cp -v -a --target-directory="${D}/pkg/main/${PKG}.doc.${PVRF}/doc" "$@"
+}

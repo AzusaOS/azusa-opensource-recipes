@@ -47,6 +47,14 @@ cargo-native-static = false
 # install cargo as well as rust
 extended = true
 
+#target = build.host (list of triples)
+target = [
+    "x86_64-unknown-linux-gnu",
+    #"i686-unknown-linux-gnu",
+    #"aarch64-unknown-linux-gnu",
+    "wasm32-unknown-unknown"
+]
+
 [install]
 prefix = "/pkg/main/${PKG}.core.${PVRF}"
 sysconfdir = "etc"
