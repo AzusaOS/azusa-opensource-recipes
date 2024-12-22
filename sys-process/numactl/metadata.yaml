@@ -13,3 +13,10 @@ files:
             sha1: 37ea1a333827f279e940bf0ae55d6897b331f19f
             sha3-256: 4d6c9cefae566a7f964143323d8f20caa658cd590ffd5b25e87a1d01587d20e5
             sha256: 1b242f893af977a1d31af6ce9d6b8dafdd2d8ec3dc9207f7c2dc0d3446e7c7c8
+    numactl-2.0.18.tar.gz:
+        size: 447393
+        added: 2024-12-23T02:30:40.052067008+09:00
+        hashes:
+            sha1: bbbdd7b7d0601d6076fa35c9f2dccb1005924e9c
+            sha3-256: fc020ca1b0a2bd64946f315f45f8d7912c090af55c9c1a65d77f54e0fea68f6f
+            sha256: b4fc0956317680579992d7815bc43d0538960dc73aa1dd8ca7e3806e30bc1274

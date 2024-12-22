@@ -2,8 +2,9 @@
 source "../../common/init.sh"
 
 get https://github.com/yaml/libyaml/archive/${PV}/libyaml-dist-${PV}.tar.gz
+acheck
 
-cd "${P}"
+cd "${S}"
 
 #./bootstrap
 aautoreconf

@@ -1,7 +1,7 @@
 #!/bin/sh
 source "../../common/init.sh"
 
-get http://ftp.de.debian.org/debian/pool/main/liba/libaio/libaio_${PV}.orig.tar.xz
+get https://releases.pagure.org/${PN}/${P}.tar.gz
 acheck
 
 cd "${P}"

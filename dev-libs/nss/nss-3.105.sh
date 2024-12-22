@@ -9,7 +9,7 @@ cd "${P}/${PN}"
 
 importpkg nspr sqlite3 zlib
 
-/bin/bash -i
+#/bin/bash -i
 ./build.sh --opt --system-nspr --system-sqlite
 
 cd ../dist
@@ -36,7 +36,7 @@ includedir=/pkg/main/${PKG}.dev.${PVRF}/include/nss
 Name: NSS
 Description: Network Security Services
 Version: ${PV}
-Requires: nspr >= 4.8
+Requires: nspr >= 4.35
 Libs: -L\${libdir} -lssl3 -lsmime3 -lnss3 -lnssutil3
 Cflags: -I\${includedir}
 EOF
@@ -50,7 +50,7 @@ includedir=/pkg/main/${PKG}.dev.${PVRF}/include/nss
 Name: NSS
 Description: Network Security Services
 Version: ${PV}
-Requires: nspr >= 4.8
+Requires: nspr >= 4.35
 Libs: -L\${libdir} -lfreebl -lssl3 -lsmime3 -lnss3 -lnssutil3
 Cflags: -I\${includedir}/private -I\${includedir}
 EOF

@@ -6,6 +6,8 @@ acheck
 
 importpkg openssl
 
+cd "${S}"
+
 aautoreconf
 
 cd "${T}"
