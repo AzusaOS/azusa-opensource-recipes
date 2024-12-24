@@ -446,7 +446,7 @@ fixelf() {
 	# /pkg/main/dev-util.patchelf.core/bin/patchelf --set-interpreter /pkg/main/sys-libs.glibc.libs/lib64/ld-linux-x86-64.so.2
 	find "${D}" -type f -executable | while read -r fn; do
 		local ft
-		ft="$(file -b "${fn}")"
+		ft="$(file -b "${fn}" || true)"
 		case $ft in
 			*ELF*dynamically*interpreter*)
 				cur="$(/pkg/main/dev-util.patchelf.core/bin/patchelf --print-interpreter "${fn}")"

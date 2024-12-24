@@ -14,7 +14,7 @@ cd "rustc-${PV}-src"
 # We use sys-devel/llvm-full since it should be easier
 export PATH="/pkg/main/sys-devel.llvm-full.core/bin:$PATH"
 
-export WASI_SDK_PATH="/pkg/main/sys-devel.wasi-sdk.core"
+export WASI_SDK_PATH="/pkg/main/sys-devel.wasi-sdk.data"
 
 cat << EOF > config.toml
 change-id = 118703
