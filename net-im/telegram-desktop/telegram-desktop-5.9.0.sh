@@ -1,12 +1,12 @@
 #!/bin/sh
 source "../../common/init.sh"
 
-get https://github.com/telegramdesktop/tdesktop/archive/v${PV}.tar.gz tdesktop-${PV}.tar.gz
+fetchgit https://github.com/telegramdesktop/tdesktop.git "v${PV}"
 acheck
 
 # telegram doesn't build if not from its source dir
 cd "${S}"
 
-docmake
+docmake || /bin/bash -i
 
 finalize
