@@ -4,7 +4,7 @@ source "../../common/init.sh"
 get https://github.com/${PN}/${PN}/releases/download/${P}/${P}.tar.gz
 acheck
 
-cd "${T}"
+cd "${S}"
 
 doconf --disable-java --with-afflib --with-zlib
 
