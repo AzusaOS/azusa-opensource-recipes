@@ -9,7 +9,7 @@ export LIBCLANG_PATH=/pkg/main/sys-devel.llvm-full.libs/lib$LIB_SUFFIX
 
 # we keep networking alive for cargo
 cd "${S}"
-cargo build --release --workspace
+cargo build --release --workspace --features massa-node/execution-trace
 
 for foo in massa-node massa-client; do
 	cd "${S}/$foo"

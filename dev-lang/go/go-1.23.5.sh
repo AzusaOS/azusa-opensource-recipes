@@ -9,7 +9,7 @@ export GOOS="${OS}"
 export GOARCH="${ARCH}"
 export GOROOT_FINAL="/pkg/main/${PKG}.dev.${PVRF}"
 export GOROOT="${D}/pkg/main/${PKG}.dev.${PVRF}"
-export PATH="/pkg/main/dev-lang.go.dev/bin/:$PATH"
+export PATH="/pkg/main/dev-lang.go.dev.${OS}.${ARCH}/bin/:$PATH"
 if [ x"$ARCH" = x"386" ]; then
 	export CGO_CFLAGS=-fno-stack-protector # https://github.com/golang/go/issues/54313
 fi
