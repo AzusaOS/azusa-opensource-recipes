@@ -17,11 +17,9 @@ done
 echo " * Using CUDA_VERSION=$CUDA_VERSION and GCC_VERSION=$GCC_VERSION"
 
 get https://github.com/pytorch/pytorch/releases/download/v${PV}/pytorch-v${PV}.tar.gz ${P}.tar.gz
-cd "${S}"
-apatch "$FILESDIR/caffe2-2.0.0-gcc13.patch"
 acheck
 
-importpkg sys-process/numactl dev-util/nvidia-cuda-toolkit:$CUDA_VERSION dev-util/nvidia-cuda-profiler-api:$CUDA_VERSION dev-lang/python dev-libs/cudnn dev-libs/gmp dev-libs/mpfr sci-libs/fftw dev-cpp/tbb dev-libs/protobuf media-libs/nv-codec-headers dev-cpp/eigen sci-libs/onnx dev-libs/sleef dev-libs/FP16
+importpkg zlib sys-process/numactl dev-util/nvidia-cuda-toolkit:$CUDA_VERSION dev-util/nvidia-cuda-profiler-api:$CUDA_VERSION dev-lang/python dev-libs/cudnn dev-libs/gmp dev-libs/mpfr sci-libs/fftw dev-cpp/tbb dev-libs/protobuf media-libs/nv-codec-headers dev-cpp/eigen sci-libs/onnx dev-libs/sleef dev-libs/FP16
 
 # force cuda, we do not force gcc version but instead pass --compiler-bindir in CMAKE_CUDA_FLAGS
 export PATH="/pkg/main/dev-util.nvidia-cuda-toolkit.core.$CUDA_VERSION/bin:$PATH"

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # currently active python versions (for modules, etc)
-PYTHON_VERSIONS="3.12.2"
+PYTHON_VERSIONS="3.12.8"
 PYTHON_LATEST="$(echo "$PYTHON_VERSIONS" | sed -e 's/.* //')"
 #PYTHON_LATEST="$(echo $PYTHON_VERSIONS | awk 'NF>1{print $NF}')"
 
