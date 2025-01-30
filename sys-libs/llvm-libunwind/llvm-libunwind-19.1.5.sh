@@ -8,9 +8,6 @@ acheck
 
 # see http://llvm.org/docs/CMake.html
 
-export CC=/pkg/main/sys-devel.clang.core/bin/clang
-export CXX=/pkg/main/sys-devel.clang.core/bin/clang++
-
 importpkg zlib
 
 CMAKE_OPTS=(

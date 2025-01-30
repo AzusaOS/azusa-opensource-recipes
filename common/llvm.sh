@@ -1,12 +1,12 @@
 #!/bin/sh
 
 # make our bootstrap available (clang, etc)
-export PATH="/pkg/main/sys-devel.llvm.core.${PV}/bin:/pkg/main/sys-devel.llvm-bootstrap.data.${PV}/bin:$PATH"
 
 if [ -f "/pkg/main/sys-devel.clang.core.${PV}/bin/clang" ]; then
 	CC="/pkg/main/sys-devel.clang.core.${PV}/bin/clang"
 	CXX="/pkg/main/sys-devel.clang.core.${PV}/bin/clang++"
 	echo "llvm: CC=$CC"
+	export PATH="/pkg/main/sys-devel.llvm.core.${PV}/bin:$PATH"
 else
 	CC="/pkg/main/sys-devel.llvm-bootstrap.data.${PV}/bin/clang"
 	CXX="/pkg/main/sys-devel.llvm-bootstrap.data.${PV}/bin/clang++"
