@@ -29,7 +29,7 @@ check_fail_location() {
 	local T="$1"
 	# check if location is empty after clearing legacy stuff, fail if not
 	find "$T" -name azusafinder*.pyc | xargs rm -fv
-	find "$T" -name __pycache__ -type d | xargs rmdir --ignore-fail-on-non-empty -v
+	find "$T" -name __pycache__ -type d | xargs --no-run-if-empty rmdir --ignore-fail-on-non-empty -v
 	find "$T" -type c | xargs rm -fv # removed files are stored as character device files by overlayfs - we don't care about removed files
 	find "$T" -empty -type d -delete
 	if [ -e "$T" ]; then
@@ -68,9 +68,9 @@ pythonsetup() {
 
 		export PYTHONHOME="/pkg/main/dev-lang.python.core.${PYTHON_VERSION}"
 		if [ "$PYTHONPATH_EXTRA" == "" ]; then
-			export PYTHONPATH=":./site-packages:/pkg/main/dev-python.Cython.mod.0.29.37.py3.12.2.linux.amd64/lib/python3.12/site-packages/:/pkg/main/dev-lang.python-modules.core.${PYTHON_VERSION}.${OS}.${ARCH}/lib/python${PYTHON_VERSION_MINOR}:/pkg/main/dev-lang.python-modules.core.${PYTHON_VERSION}/lib/python${PYTHON_VERSION_MINOR}/site-packages:$PYTHONHOME/lib/python${PYTHON_VERSION_MINOR}/lib-dynload"
+			export PYTHONPATH=":./site-packages:/pkg/main/dev-lang.python-modules.core.${PYTHON_VERSION}.${OS}.${ARCH}/lib/python${PYTHON_VERSION_MINOR}:/pkg/main/dev-lang.python-modules.core.${PYTHON_VERSION}/lib/python${PYTHON_VERSION_MINOR}/site-packages:$PYTHONHOME/lib/python${PYTHON_VERSION_MINOR}/lib-dynload"
 		else
-			export PYTHONPATH=":./site-packages:$PYTHONPATH_EXTRA:/pkg/main/dev-python.Cython.mod.0.29.37.py3.12.2.linux.amd64/lib/python3.12/site-packages/:/pkg/main/dev-lang.python-modules.core.${PYTHON_VERSION}.${OS}.${ARCH}/lib/python${PYTHON_VERSION_MINOR}:/pkg/main/dev-lang.python-modules.core.${PYTHON_VERSION}/lib/python${PYTHON_VERSION_MINOR}/site-packages:$PYTHONHOME/lib/python${PYTHON_VERSION_MINOR}/lib-dynload"
+			export PYTHONPATH=":./site-packages:$PYTHONPATH_EXTRA:/pkg/main/dev-lang.python-modules.core.${PYTHON_VERSION}.${OS}.${ARCH}/lib/python${PYTHON_VERSION_MINOR}:/pkg/main/dev-lang.python-modules.core.${PYTHON_VERSION}/lib/python${PYTHON_VERSION_MINOR}/site-packages:$PYTHONHOME/lib/python${PYTHON_VERSION_MINOR}/lib-dynload"
 		fi
 		#export SETUPTOOLS_USE_DISTUTILS=stdlib
 
@@ -79,19 +79,18 @@ pythonsetup() {
 
 		#PIP_EXE="/pkg/main/dev-lang.python-modules.core.${PYTHON_VERSION}.${OS}.${ARCH}/bin/pip${PYTHON_VERSION_MAJOR}"
 		PYTHON_EXE="/pkg/main/dev-lang.python.core.${PYTHON_VERSION}/bin/python${PYTHON_VERSION_MAJOR}"
-		if [ "$(cat "$PYTHON_PACKAGES" | grep -c pip)" -gt 0 ]; then
-			#"$PIP_EXE" install --no-binary=:all: --no-deps --no-clean --disable-pip-version-check --root "${D}" --prefix "/pkg/main/dev-lang.python-modules.core.${PYTHON_VERSION}.${OS}.${ARCH}" .
-			#"$PIP_EXE" install --no-binary=:all: --no-deps --no-clean --disable-pip-version-check --root "${D}" --prefix "/pkg/main/${PKG}.mod.${PVR}.py${PYTHON_VERSION}" .
-			#logrun "$PYTHON_EXE" -m pip list
-			mkdir -p site-packages
-			echo "import wheel" >site-packages/load_wheel.py
-			echo "print(\"loaded wheel\")" >>site-packages/load_wheel.py
-			echo "import load_wheel" >site-packages/load_wheel.pth
-			logrun "$PYTHON_EXE" -m pip install --verbose --verbose --verbose --no-binary=:all: --no-build-isolation --no-cache-dir --no-deps --disable-pip-version-check --root "$D" --prefix "/pkg/main/${PKG}.mod.${PVR}.py${PYTHON_VERSION}.${OS}.${ARCH}" .
-		else
-			# if we don't have pip, fallback to using setup.py (required to install setuptools & pip)
-			logrun "$PYTHON_EXE" setup.py install --root "${D}" --prefix="/pkg/main/${PKG}.mod.${PVR}.py${PYTHON_VERSION}.${OS}.${ARCH}" "$@"
+		if [ "$(cat "$PYTHON_PACKAGES" | grep -c pip)" -eq 0 ]; then
+			echo "pip is missing, causing pip to exist temporarily..."
+			logrun "$PYTHON_EXE" -m ensurepip
 		fi
+		#"$PIP_EXE" install --no-binary=:all: --no-deps --no-clean --disable-pip-version-check --root "${D}" --prefix "/pkg/main/dev-lang.python-modules.core.${PYTHON_VERSION}.${OS}.${ARCH}" .
+		#"$PIP_EXE" install --no-binary=:all: --no-deps --no-clean --disable-pip-version-check --root "${D}" --prefix "/pkg/main/${PKG}.mod.${PVR}.py${PYTHON_VERSION}" .
+		#logrun "$PYTHON_EXE" -m pip list
+		mkdir -p site-packages
+		echo "import wheel" >site-packages/load_wheel.py
+		echo "print(\"loaded wheel\")" >>site-packages/load_wheel.py
+		echo "import load_wheel" >site-packages/load_wheel.pth
+		logrun "$PYTHON_EXE" -m pip install --verbose --verbose --verbose --no-binary=:all: --no-build-isolation --no-cache-dir --no-deps --disable-pip-version-check --root "$D" --prefix "/pkg/main/${PKG}.mod.${PVR}.py${PYTHON_VERSION}.${OS}.${ARCH}" .
 
 		# fetch the installed module from /.pkg-main-rw/
 		mkdir -p "${D}/pkg/main/${PKG}.mod.${PVR}.py${PYTHON_VERSION}.${OS}.${ARCH}"
