@@ -1,7 +1,7 @@
 #!/bin/sh
 source "../../common/init.sh"
 
-get https://github.com/KhronosGroup/OpenCL-ICD-Loader/archive/refs/tags/v${PV}.tar.gz ${P}.tar.gz
+get https://github.com/PJK/${PN}/archive/refs/tags/v${PV}.tar.gz "${P}.tar.gz"
 acheck
 
 cd "${T}"

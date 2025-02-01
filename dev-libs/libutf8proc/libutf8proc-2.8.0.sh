@@ -6,6 +6,6 @@ acheck
 
 cd "${T}"
 
-docmake
+docmake -DBUILD_SHARED_LIBS=YES
 
 finalize

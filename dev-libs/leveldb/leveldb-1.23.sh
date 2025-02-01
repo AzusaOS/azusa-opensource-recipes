@@ -6,6 +6,6 @@ acheck
 
 cd "${T}"
 
-docmake -DLEVELDB_BUILD_TESTS=NO
+docmake -DBUILD_SHARED_LIBS=YES -DLEVELDB_BUILD_TESTS=NO
 
 finalize

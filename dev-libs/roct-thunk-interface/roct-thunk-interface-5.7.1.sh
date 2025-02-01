@@ -8,6 +8,6 @@ cd "${T}"
 
 importpkg sys-process/numactl
 
-docmake
+docmake -DBUILD_SHARED_LIBS=YES
 
 finalize

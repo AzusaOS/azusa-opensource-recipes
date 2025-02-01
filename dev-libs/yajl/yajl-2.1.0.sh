@@ -6,9 +6,6 @@ acheck
 
 cd "${T}"
 
-docmake
-
-make
-make install DESTDIR="${D}"
+docmake -DBUILD_SHARED_LIBS=YES
 
 finalize

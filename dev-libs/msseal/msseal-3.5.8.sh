@@ -9,6 +9,6 @@ cd "${T}"
 importpkg zlib dev-libs/msgsl
 
 # TODO make seal take ZLIB ans MSGSL from the system
-docmake -DSEAL_USE_ZLIB=OFF -DSEAL_USE_MSGSL=OFF
+docmake -DBUILD_SHARED_LIBS=ON -DSEAL_USE_ZLIB=OFF -DSEAL_USE_MSGSL=OFF
 
 finalize
