@@ -15,10 +15,6 @@ if [ -f /pkg/main/sys-devel.gcc.core/bin/cpp ]; then
 	export CPP=/pkg/main/sys-devel.gcc.core/bin/cpp
 fi
 
-# note: we disable systemtap because gcc cannot look into the path we give it through CPPFLAGS
-# checking sys/sdt.h in the target C library... no
-# configure: error: sys/sdt.h was not found
-
 # languages:
 # all, default, ada, c, c++, d, fortran, go, jit, lto, objc, obj-c++
 
@@ -31,7 +27,7 @@ callconf --prefix=/pkg/main/${PKG}.core.${PVRF} --infodir=/pkg/main/${PKG}.doc.$
 --enable-languages=all --disable-multilib --disable-bootstrap --disable-libmpx --with-system-zlib \
 --enable-obsolete --enable-secureplt --disable-werror --enable-nls --without-included-gettext --disable-libunwind-exceptions \
 --enable-esp --enable-libstdcxx-time --with-build-config=bootstrap-lto --disable-libstdcxx-pch --enable-__cxa_atexit --enable-clocale=gnu \
---enable-cet --disable-systemtap --with-zstd --enable-lto --enable-default-ssp --enable-default-pie \
+--enable-cet --enable-systemtap --with-zstd --enable-lto --enable-default-ssp --enable-default-pie \
 --with-mpfr-include=`realpath /pkg/main/dev-libs.mpfr.dev.${OS}.${ARCH}/include` --with-mpfr-lib=`realpath /pkg/main/dev-libs.mpfr.libs.${OS}.${ARCH}/lib$LIB_SUFFIX` \
 --with-mpc-include=`realpath /pkg/main/dev-libs.mpc.dev.${OS}.${ARCH}/include` --with-mpc-lib=`realpath /pkg/main/dev-libs.mpc.libs.${OS}.${ARCH}/lib$LIB_SUFFIX` \
 --with-gmp-include=`realpath /pkg/main/dev-libs.gmp.dev.${OS}.${ARCH}/include` --with-gmp-lib=`realpath /pkg/main/dev-libs.gmp.libs.${OS}.${ARCH}/lib$LIB_SUFFIX` \
@@ -51,6 +47,13 @@ find "${D}" -name '*.la' -delete
 # you can symlink /pkg/main/sys-devel.gcc.dev/gcc-config as {{sysroot}}/etc/env.d/gcc and clang might be happy
 TRIPLE="$("${D}/pkg/main/${PKG}.core.${PVRF}/bin/gcc" -dumpmachine)"
 VERS="$("${D}/pkg/main/${PKG}.core.${PVRF}/bin/gcc" -dumpversion)"
+
+# [try to] allow clang++ to find the various c++ includes
+# Would be nice if clang could depend on gcc-config for this path, but it doesn't
+# See: https://github.com/llvm/llvm-project/issues/119793
+ln -snfv "." "${D}/pkg/main/${PKG}.dev.${PVRF}/include/c++/$VERS"
+ln -snfv "/pkg/main/sys-libs.libcxx.dev/include/c++/v1" "${D}/pkg/main/${PKG}.dev.${PVRF}/include/c++/v1"
+ln -snfv "/pkg/main/${PKG}.dev.${PVRF}/include/c++" "${D}/pkg/main/${PKG}.libs.${PVRF}/lib$LIB_SUFFIX/gcc/$TRIPLE/$VERS/include/g++-v$VERS"
 
 mkdir -p "${D}/pkg/main/${PKG}.dev.${PVRF}/gcc-config"
 echo "CURRENT=${TRIPLE}-${PV}" >"${D}/pkg/main/${PKG}.dev.${PVRF}/gcc-config/config-${TRIPLE}"

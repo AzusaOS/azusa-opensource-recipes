@@ -6,6 +6,7 @@ acheck
 
 cd "${T}"
 
-domeson
+# scanner is in wayland-scanner
+domeson -Dlibraries=true -Dscanner=false
 
 finalize

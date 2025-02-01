@@ -2,12 +2,12 @@
 source "../../common/init.sh"
 
 get https://www.cairographics.org/releases/${P}.tar.gz
+acheck
 
 cd "${T}"
 
-meson --prefix="/pkg/main/${PKG}.core.${PVRF}" "${CHPATH}/${P}"
+importpkg zlib
 
-ninja
-DESTDIR="${D}" ninja install
+domeson
 
 finalize

@@ -6,7 +6,7 @@ acheck
 
 cd "${T}"
 
-importpkg dev-libs/protobuf
+importpkg dev-libs/protobuf dev-cpp/abseil-cpp
 
 # we use onnx with libcaffe2 which use an older gcc to be compatible with cuda
 # it seems that if we build onnx with a more recent gcc, it later fails to link, so we use the same gcc here

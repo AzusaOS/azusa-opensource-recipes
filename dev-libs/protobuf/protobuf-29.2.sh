@@ -8,6 +8,6 @@ cd "${T}"
 
 importpkg zlib dev-cpp/abseil-cpp
 
-docmake -Dprotobuf_BUILD_TESTS=OFF -Dprotobuf_ABSL_PROVIDER=package -DCMAKE_PREFIX_PATH=/pkg/main/dev-cpp.abseil-cpp.dev
+docmake -Dprotobuf_BUILD_TESTS=OFF -Dprotobuf_BUILD_SHARED_LIBS=ON -Dprotobuf_ABSL_PROVIDER=package -DCMAKE_PREFIX_PATH=/pkg/main/dev-cpp.abseil-cpp.dev
 
 finalize

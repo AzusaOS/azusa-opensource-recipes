@@ -1,8 +1,8 @@
 #!/bin/sh
 source "../../common/init.sh"
 
-DRIVER_PV="550.54.14"
-cuda_supported_gcc="8.5 9.4 9.5 10 10.3 10.4 11 11.1 11.2 11.3 12 12.1 12.2"
+DRIVER_PV="550.54.15"
+cuda_supported_gcc="8.5 9.5 10 11 12 13"
 
 get "https://developer.download.nvidia.com/compute/cuda/${PV}/local_installers/cuda_${PV}_${DRIVER_PV}_linux.run"
 acheck
@@ -62,7 +62,7 @@ ln -snf "/pkg/main/${PKG}.libs.${PVRF}/lib$LIB_SUFFIX" "${D}/pkg/main/${PKG}.cor
 ln -snf "/pkg/main/${PKG}.dev.${PVRF}/include" "${D}/pkg/main/${PKG}.core.${PVRF}/include"
 ln -snf "/pkg/main/${PKG}.libs.${PVRF}/lib$LIB_SUFFIX" "${D}/pkg/main/${PKG}.core.${PVRF}/lib$LIB_SUFFIX"
 
-# cuda-config
+#cuda-config
 sed -e "s:CUDA_SUPPORTED_GCC:${cuda_supported_gcc}:g" \
 	"${FILESDIR}"/cuda-config.in > "${D}/pkg/main/${PKG}.core.${PVRF}/bin/cuda-config"
 chmod -v +x "${D}/pkg/main/${PKG}.core.${PVRF}/bin/cuda-config"

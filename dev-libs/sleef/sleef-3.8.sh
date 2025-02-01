@@ -8,6 +8,6 @@ cd "${T}"
 
 importpkg dev-libs/mpfr dev-libs/gmp sci-libs/fftw
 
-docmake -DDISABLE_FFTW=ON -DBUILD_QUAD=ON -DBUILD_TESTS=OFF
+docmake -DBUILD_SHARED_LIBS=ON -DDISABLE_FFTW=ON -DBUILD_QUAD=ON -DBUILD_TESTS=OFF
 
 finalize
