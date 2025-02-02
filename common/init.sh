@@ -277,8 +277,9 @@ org_fixdev() {
 	done
 
 	if [ -d "${D}/pkg/main/${PKG}.core.${PVRF}/include" ]; then
-		mkdir -pv "${D}/pkg/main/${PKG}.dev.${PVRF}"
-		mv -v "${D}/pkg/main/${PKG}.core.${PVRF}/include" "${D}/pkg/main/${PKG}.dev.${PVRF}/include"
+		mkdir -pv "${D}/pkg/main/${PKG}.dev.${PVRF}/include"
+		mv -v "${D}/pkg/main/${PKG}.core.${PVRF}/include"/* "${D}/pkg/main/${PKG}.dev.${PVRF}/include"
+		rmdir "${D}/pkg/main/${PKG}.core.${PVRF}/include"
 		ln -sv "/pkg/main/${PKG}.dev.${PVRF}/include" "${D}/pkg/main/${PKG}.core.${PVRF}/include"
 	fi
 }

@@ -15,6 +15,6 @@ apatch "${FILESDIR}"/${PN}-0.4.0-gcc13.patch \
 
 importpkg dev-libs/libfmt dev-libs/dynolog
 
-docmake -DKINETO_BUILD_TESTS=OFF -DLIBKINETO_NOXPUPTI=Yes #-DCUDA_SOURCE_DIR=/
+docmake -DBUILD_SHARED_LIBS=YES -DKINETO_BUILD_TESTS=OFF -DLIBKINETO_NOXPUPTI=Yes #-DCUDA_SOURCE_DIR=/
 
 finalize

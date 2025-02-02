@@ -40,7 +40,10 @@ docmake -DBUILD_SHARED_LIBS=OFF -DCPR_FORCE_USE_SYSTEM_CURL=ON
 cd "${S}"
 mkdir -p "${D}/pkg/main/${PKG}.dev.${PVRF}/include/dynolog/src/ipcfabric"
 cp dynolog/src/ipcfabric/FabricManager.h "${D}/pkg/main/${PKG}.dev.${PVRF}/include/dynolog/src/ipcfabric"
-find dynolog -name '*.h' | xargs install -t "${D}/pkg/main/${PKG}.dev.${PVRF}/include" -D -v
+
+for f in $(find dynolog -name '*.h'); do
+	install -v -D "$f" "${D}/pkg/main/${PKG}.dev.${PVRF}/include/$f"
+done
 
 cd "${S}/cli"
 cargo build --release
