@@ -4,7 +4,7 @@ source "../../common/init.sh"
 get https://github.com/google/${PN}/archive/v${PV}.tar.gz ${P}.tar.gz
 acheck
 
-importpkg sys-libs/llvm-libunwind
+importpkg sys-libs/libunwind
 
 cd "${T}"
 

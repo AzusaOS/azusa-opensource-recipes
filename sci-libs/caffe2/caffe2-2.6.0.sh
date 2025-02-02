@@ -4,18 +4,14 @@ inherit python
 
 PYTHON_RESTRICT="$PYTHON_LATEST"
 
+get https://github.com/pytorch/pytorch/releases/download/v${PV}/pytorch-v${PV}.tar.gz ${P}.tar.gz
+acheck
+
 # query cuda-config to find supported gcc versions
 inherit cuda
 initcuda 12.4
 
-get https://github.com/pytorch/pytorch/releases/download/v${PV}/pytorch-v${PV}.tar.gz ${P}.tar.gz
-acheck
-
 importpkg zlib sys-process/numactl dev-util/nvidia-cuda-toolkit:$CUDA_VERSION dev-util/nvidia-cuda-profiler-api:$CUDA_VERSION dev-lang/python dev-libs/cudnn dev-libs/gmp dev-libs/mpfr sci-libs/fftw dev-cpp/tbb dev-libs/protobuf media-libs/nv-codec-headers dev-cpp/eigen sci-libs/onnx dev-libs/sleef dev-libs/FP16
-
-# force cuda, we do not force gcc version but instead pass --compiler-bindir in CMAKE_CUDA_FLAGS
-export PATH="/pkg/main/dev-util.nvidia-cuda-toolkit.core.$CUDA_VERSION/bin:$PATH"
-rm -f /usr/bin/nvcc
 
 cd "${T}"
 

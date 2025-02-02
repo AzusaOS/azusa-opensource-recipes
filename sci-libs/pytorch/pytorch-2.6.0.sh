@@ -4,6 +4,9 @@ inherit python
 
 PYTHON_RESTRICT="$PYTHON_LATEST"
 
+inherit cuda
+initcuda 12.4
+
 get https://github.com/pytorch/pytorch/releases/download/v${PV}/pytorch-v${PV}.tar.gz ${P}.tar.gz
 acheck
 
@@ -12,7 +15,7 @@ importpkg sci-libs/caffe2
 cd "${S}"
 
 apatch \
-	"${FILESDIR}"/pytorch-2.2.1-Don-t-build-libtorch-again.patch \
+	#"${FILESDIR}"/pytorch-2.5.1-dontbuildagain.patch \
         "${FILESDIR}"/pytorch-1.9.0-Change-library-directory-according-to-CMake-build.patch \
         "${FILESDIR}"/pytorch-2.0.0-global-dlopen.patch \
         "${FILESDIR}"/pytorch-1.7.1-torch_shm_manager.patch \

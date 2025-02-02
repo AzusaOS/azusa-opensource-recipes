@@ -22,7 +22,11 @@ scanlibs() {
 		fi
 		echo -ne "\rScanning: $pn\033[K"
 		if [ ! -f "${p}/.ld.so.cache" ]; then
-			echo -e "\rMissing ld config file: $pn"
+			# only issue warning if there is no such file in latest version too
+			pt="/pkg/main/$(echo "$pn" | cut -d. -f1-3).$1"
+			if [ ! -f "${pt}/.ld.so.cache" ]; then
+				echo -e "\rMissing ld config file: $pn"
+			fi
 		fi
 		for foo in $LIBS; do
 			if [ -d "${p}/$foo" -a ! -L "${p}/$foo" ]; then

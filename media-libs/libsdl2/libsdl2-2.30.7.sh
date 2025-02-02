@@ -6,7 +6,7 @@ acheck
 
 cd "SDL2-${PV}"
 
-importpkg sys-fs/udev app-i18n/ibus dev-libs/wayland X
+importpkg sys-fs/udev app-i18n/ibus dev-libs/wayland media-libs/libsamplerate X
 
 doconf --disable-static
 

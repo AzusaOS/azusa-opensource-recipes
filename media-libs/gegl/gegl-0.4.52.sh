@@ -7,7 +7,7 @@ acheck
 
 cd "${T}"
 
-importpkg libjpeg
+importpkg libjpeg media-libs/libv4l
 
 MESONOPTS=(
 	-Ddocs=false

@@ -88,3 +88,23 @@ EOF
 			exit 1
 	esac
 }
+
+# @FUNCTION: cmake_comment_add_subdirectory
+# @USAGE: <subdirectory>
+# @DESCRIPTION:
+# Comment out one or more add_subdirectory calls in CMakeLists.txt in the current directory
+cmake_comment_add_subdirectory() {
+	if [[ -z ${1} ]]; then
+		die "${FUNCNAME[0]} must be passed at least one directory name to comment"
+	fi
+
+	[[ -e "CMakeLists.txt" ]] || return
+
+	local d
+	for d in $@; do
+		d=${d//\//\\/}
+		sed -e "/add_subdirectory[[:space:]]*([[:space:]]*${d}[[:space:]]*)/I s/^/#DONOTCOMPILE /" \
+			-i CMakeLists.txt || die "failed to comment add_subdirectory(${d})"
+	done
+}
+
