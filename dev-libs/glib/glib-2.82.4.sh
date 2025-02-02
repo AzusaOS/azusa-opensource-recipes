@@ -11,6 +11,7 @@ cd "${T}"
 # TODO: eventially enable doc once we have docbook
 
 # configure & build
-domeson --strip --default-library shared -Dselinux=disabled
+# -Dintrospection=disabled might be needed to build glib for building gobject-introspection
+domeson --strip --default-library shared -Dselinux=disabled #-Dintrospection=disabled
 
 finalize

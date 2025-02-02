@@ -24,7 +24,7 @@ PYTHON_RESTRICT="$PYTHON_LATEST"
 inherit cuda
 initcuda 12.4
 
-importpkg zlib sys-process/numactl dev-util/nvidia-cuda-toolkit:$CUDA_VERSION dev-util/nvidia-cuda-profiler-api:$CUDA_VERSION dev-lang/python dev-libs/cudnn dev-libs/gmp dev-libs/mpfr sci-libs/fftw dev-cpp/tbb dev-libs/protobuf media-libs/nv-codec-headers dev-cpp/eigen sci-libs/onnx dev-libs/sleef dev-libs/FP16 dev-libs/FBGEMM dev-libs/asmjit sci-libs/kineto
+importpkg zlib sys-process/numactl dev-util/nvidia-cuda-toolkit:$CUDA_VERSION dev-util/nvidia-cuda-profiler-api:$CUDA_VERSION dev-lang/python dev-libs/cudnn dev-libs/gmp dev-libs/mpfr sci-libs/fftw dev-cpp/tbb dev-libs/protobuf media-libs/nv-codec-headers dev-cpp/eigen eigen3 sci-libs/onnx dev-libs/sleef dev-libs/FP16 dev-libs/FBGEMM dev-libs/asmjit sci-libs/kineto dev-cpp/glog sci-libs/openblas dev-libs/cpuinfo dev-libs/psimd
 
 cd "${T}"
 
@@ -64,12 +64,10 @@ OPTS=(
 	-DUSE_MPI=OFF # openmpi + ensorpipe etc
 	-DUSE_FAKELOWP=OFF
 	#-DUSE_FBGEMM=
-	-DUSE_FFMPEG=ON
 	-DUSE_GFLAGS=ON
 	-DUSE_GLOG=ON
 	-DUSE_GLOO=OFF
 	-DUSE_KINETO=OFF # TODO
-	-DUSE_LEVELDB=OFF
 	-DUSE_MAGMA=OFF # TODO: In GURU as sci-libs/magma
 	-DUSE_MKLDNN=OFF
 	-DUSE_NCCL=OFF # TODO: NVIDIA Collective Communication Library
@@ -87,14 +85,13 @@ OPTS=(
 	# -DUSE_OPENCV=ON # FIXME
 	-DUSE_OPENMP=ON
 	-DUSE_ROCM=OFF # TODO
-	#-DUSE_SYSTEM_CPUINFO=ON
 	#-DUSE_SYSTEM_PYBIND11=ON # TODO
 	-DUSE_UCC=OFF
 	-DUSE_VALGRIND=OFF
 	-DPYBIND11_PYTHON_VERSION="$PYTHON_LATEST"
 	-DPYTHON_EXECUTABLE="/pkg/main/dev-lang.python.core.${PYTHON_LATEST}/bin/python${PYTHON_LATEST%.*}"
 	-DUSE_ITT=OFF
-	-DBLAS=Eigen # avoid the use of MKL, if found on the system
+	-DBLAS=OpenBLAS
 	-DUSE_SYSTEM_EIGEN_INSTALL=ON
 	-DEigen3_DIR=/pkg/main/dev-cpp.eigen.core/share/eigen3/cmake
 	-DUSE_SYSTEM_PTHREADPOOL=ON
@@ -103,6 +100,8 @@ OPTS=(
 	-DUSE_SYSTEM_GLOO=ON
 	-DUSE_SYSTEM_ONNX=ON
 	-DUSE_SYSTEM_SLEEF=ON
+	-DUSE_SYSTEM_CPUINFO=ON
+	-DUSE_SYSTEM_PSIMD=ON
 
 	-Wno-dev
 	-DTORCH_INSTALL_LIB_DIR="/pkg/main/${PKG}.libs.${PVRF}/lib$LIB_SUFFIX"
