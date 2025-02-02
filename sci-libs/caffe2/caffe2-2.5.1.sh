@@ -110,15 +110,12 @@ OPTS=(
 
 )
 
-# building can take a lot of ram. My 64GB RAM have trouble with any more processes
-NPROC=4
-
 docmake "${OPTS[@]}"
 
 # prepare the stuff we need to build torch
 mkdir -pv "${D}/pkg/main/${PKG}.dev.${PVRF}/torch_build"
 cp -v CMakeCache.txt "${D}/pkg/main/${PKG}.dev.${PVRF}/torch_build"
-cp -v "${S}/torch/version.py" "${D}/pkg/main/${PKG}.dev.${PVRF}/torch_build" || /bin/bash -i
-cp -v "${S}/functorch/functorch.so" "${D}/pkg/main/${PKG}.dev.${PVRF}/torch_build"
+cp -v "${S}/torch/version.py" "${D}/pkg/main/${PKG}.dev.${PVRF}/torch_build"
+install -v "functorch/functorch.so" "${D}/pkg/main/${PKG}.dev.${PVRF}/torch_build"
 
 finalize
