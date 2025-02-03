@@ -238,7 +238,7 @@ pythondownload() {
 	if [ x"$URL" != x ]; then
 		get "$URL"
 	else
-		get https://pypi.org/packages/source/\${PN:0:1}/\${PN}/\${P}.tar.gz
+		get https://pypi.org/packages/source/${PN:0:1}/${PN}/${P}.tar.gz
 	fi
 }
 
