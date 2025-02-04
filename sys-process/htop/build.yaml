@@ -1,7 +1,7 @@
 versions:
     list:
-        - 3.2.2
-    stable: 3.2.2
+        - 3.3.0
+    stable: 3.3.0
 build:
     - version: '*'
       env:
