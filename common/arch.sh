@@ -27,6 +27,14 @@ case $ARCH in
 		LIB_SUFFIX=
 		CHOST="aarch64-unknown-linux-gnu"
 		;;
+	ppc64le)
+		ARCH=ppc64le
+		LIB_SUFFIX=
+		CHOST="ppc64le-unknown-linux-gnu"
+		;;
+	*)
+		echo "Unsupported arch: $ARCH"
+		exit 1
 esac
 
 # armv7-unknown-linux-gnueabi
