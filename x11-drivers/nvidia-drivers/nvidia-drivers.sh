@@ -5,6 +5,9 @@ nvidia_download_redist() {
 		amd64)
 			get https://developer.download.nvidia.com/compute/nvidia-driver/redist/nvidia_driver/linux-x86_64/nvidia_driver-linux-x86_64-${PV}-archive.tar.xz
 			;;
+		arm64)
+			get https://developer.download.nvidia.com/compute/nvidia-driver/redist/nvidia_driver/linux-sbsa/nvidia_driver-linux-sbsa-${PV}-archive.tar.xz
+			;;
 		*)
 			echo "Unsupported arch: $ARCH"
 			exit 1
@@ -20,13 +23,27 @@ nvidia_process_redist() {
 }
 
 nvidia_download_xfree86() {
-	NV_URI="https://download.nvidia.com/XFree86/"
-	get ${NV_URI}Linux-x86_64/${PV}/NVIDIA-Linux-x86_64-${PV}.run
+	local NV_URI="https://download.nvidia.com/XFree86/"
+	local NV_BASE
+
+	case $ARCH in
+		amd64)
+			NV_BASE="NVIDIA-Linux-x86_64-${PV}"
+			get "${NV_URI}Linux-x86_64/${PV}/${NV_BASE}.run"
+			;;
+		arm64)
+			NV_BASE="NVIDIA-Linux-aarch64-${PV}"
+			get "${NV_URI}Linux-aarch64/${PV}/${NV_BASE}.run"
+			;;
+		*)
+			echo "Unsupported arch: $ARCH"
+			exit 1
+	esac
 
 	# TODO might have a better way to extract this?
-	chmod +x NVIDIA-Linux-x86_64-${PV}.run
-	./NVIDIA-Linux-x86_64-${PV}.run --extract-only
-	S="$PWD/NVIDIA-Linux-x86_64-${PV}"
+	chmod +x "${NV_BASE}.run"
+	"./${NV_BASE}.run" --extract-only
+	S="$PWD/${NV_BASE}"
 }
 
 nvidia_organize_xfree86() {
