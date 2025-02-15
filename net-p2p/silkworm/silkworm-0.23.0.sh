@@ -12,6 +12,6 @@ importpkg dev-libs/libgit2
 export PATH="/pkg/main/dev-python.conan.mod/bin:$PATH"
 
 cd "${T}"
-docmake
+CMAKE_TARGET_ALL=silkworm_capi docmake || /bin/bash -i
 
 finalize

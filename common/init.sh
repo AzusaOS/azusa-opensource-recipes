@@ -1,6 +1,6 @@
 #!/bin/bash
 # Common stuff, variables, etc
-set -e
+set -eo pipefail
 
 BASEDIR="$(pwd)"
 if [ x"$ROOTDIR" = x ]; then

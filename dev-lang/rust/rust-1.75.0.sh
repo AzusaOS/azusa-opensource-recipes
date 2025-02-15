@@ -14,5 +14,5 @@ get https://static.rust-lang.org/dist/rust-${PV}-${RUST_ARCH}-unknown-linux-gnu.
 acheck
 
 cd "${S}"
-./install.sh --destdir="${D}" --disable-ldconfig --prefix="/pkg/main/${PKG}.core.${PVRF}" --libdir="lib${LIB_SUFFIX}"
+./install.sh --destdir="${D}" --disable-ldconfig --prefix="/pkg/main/${PKG}.core.${PVRF}" --libdir="${D}/pkg/main/${PKG}.libs.${PVRF}/lib${LIB_SUFFIX}"
 finalize
