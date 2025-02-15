@@ -10,7 +10,6 @@ importpkg libudev
 cd "${S}"
 
 CARGO_VERSION="$(cat rust-toolchain.toml | grep ^channel | sed -e 's/"$//;s/.*"//')"
-CARGO_VERSION="1.75.0"
 export PATH="/pkg/main/dev-lang.rust.core.$CARGO_VERSION/bin:$PATH"
 
 echo "#!/bin/sh" >cargo

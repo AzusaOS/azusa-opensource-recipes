@@ -5,16 +5,15 @@ fetchgit https://github.com/OffchainLabs/nitro.git "v${PV}"
 envcheck
 # do not use acheck so we keep networking
 
-export PATH="/pkg/main/dev-lang.go.dev/bin:$PATH"
+export PATH="/pkg/main/dev-lang.go.dev.1.22/bin:$PATH"
 
 echo -n "Using: "
 go version
 
-cd "${S}"
+CARGO_VERSION="1.80.1"
+export PATH="/pkg/main/dev-lang.rust.core.$CARGO_VERSION/bin:$PATH"
 
-# do not run golangci-lint as it fails if we use a more recent version than what nitro uses, and lint is more useful for devs than us anyway
-sed -i -e 's/golangci-lint/#golangci-lint/' Makefile
-sed -i -e 's/wasm32-wasi/wasm32-wasip1/g' Makefile
+cd "${S}"
 
 # first, build brotli wasm (makefile will attempt to use docker for this, we don't want docker)
 PATH="/pkg/main/dev-util.emscripten.core/bin:$PATH" ./scripts/build-brotli.sh -w
@@ -23,12 +22,10 @@ PATH="/pkg/main/dev-util.emscripten.core/bin:$PATH" ./scripts/build-brotli.sh -w
 # give it node18 so it's happy
 export PATH="/pkg/main/net-libs.nodejs.core.18/bin:$PATH"
 
-# link: github.com/fjl/memsize: invalid reference to runtime.stopTheWorld
-# won't work with go 1.23+
-export PATH="/pkg/main/dev-lang.go.dev.1.22/bin:$PATH"
-
 export WASI_SYSROOT=/pkg/main/sys-devel.wasi-sdk.data/share/wasi-sysroot
 
+# make all would call make lint which fails
+make build
 
 /bin/bash -i
 exit 1
