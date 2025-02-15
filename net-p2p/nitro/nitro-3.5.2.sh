@@ -26,9 +26,9 @@ export WASI_SYSROOT=/pkg/main/sys-devel.wasi-sdk.data/share/wasi-sysroot
 
 # make all would call make lint which fails
 make build
-
-/bin/bash -i
-exit 1
-
+mkdir -p "${D}/pkg/main"
+# binaries do not seem to depend on the shipped libs, check & patchelf as needed
+#patchelf --add-rpath "/pkg/main/${PKG}.mod.${PVRF}/lib" target/bin/*
+mv target "${D}/pkg/main/${PKG}.mod.${PVRF}"
 
 finalize
