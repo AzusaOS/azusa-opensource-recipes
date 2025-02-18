@@ -7,7 +7,6 @@ acheck
 
 cd "${S}"
 
-/bin/bash -i
 aautoreconf
 
 cd "${T}"
