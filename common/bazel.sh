@@ -81,7 +81,7 @@ abazel() {
 	abazel_setup_bazelrc
 
 	# --output_base="${output_base}"
-	set -- /pkg/main/dev-util.bazel.core/bin/bazel --bazelrc="${T}/bazelrc" ${@}
+	set -- /pkg/main/dev-util.bazel.core.7/bin/bazel --bazelrc="${T}/bazelrc" ${@}
 	echo "${*}"
 	"${@}"
 	return $?
