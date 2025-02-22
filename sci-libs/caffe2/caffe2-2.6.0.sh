@@ -9,7 +9,7 @@ acheck
 
 # query cuda-config to find supported gcc versions
 inherit cuda
-initcuda 12.4
+initcuda 12.8
 
 importpkg zlib sys-process/numactl dev-util/nvidia-cuda-toolkit:$CUDA_VERSION dev-util/nvidia-cuda-profiler-api:$CUDA_VERSION dev-lang/python dev-libs/cudnn dev-libs/gmp dev-libs/mpfr sci-libs/fftw dev-cpp/tbb dev-libs/protobuf media-libs/nv-codec-headers dev-cpp/eigen sci-libs/onnx dev-libs/sleef dev-libs/FP16
 
