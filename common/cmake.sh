@@ -74,14 +74,18 @@ EOF
 			for tgt in $CMAKE_EXTRA_TARGETS; do
 				ninja -j"$NPROC" -v "$tgt" || return $?
 			done
-			DESTDIR="${D}" ninja -j"$NPROC" -v "$CMAKE_TARGET_INSTALL" || return $?
+			if [ "$CMAKE_TARGET_INSTALL" != "skip" ]; then
+				DESTDIR="${D}" ninja -j"$NPROC" -v "$CMAKE_TARGET_INSTALL" || return $?
+			fi
 			;;
 		Unix\ Makefiles)
 			make -j"$NPROC" "$CMAKE_TARGET_ALL" VERBOSE=1 || return $?
 			for tgt in $CMAKE_EXTRA_TARGETS; do
 				make -j"$NPROC" "$tgt" VERBOSE=1 || return $?
 			done
-			make "$CMAKE_TARGET_INSTALL" VERBOSE=1 DESTDIR="${D}" || return $?
+			if [ "$CMAKE_TARGET_INSTALL" != "skip" ]; then
+				make "$CMAKE_TARGET_INSTALL" VERBOSE=1 DESTDIR="${D}" || return $?
+			fi
 			;;
 		*)
 			echo "Invalid value for CMAKE_BUILD_ENGINE: $CMAKE_BUILD_ENGINE"
