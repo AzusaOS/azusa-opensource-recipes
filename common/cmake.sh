@@ -52,7 +52,12 @@ EOF
 		-DCMAKE_CXX_FLAGS="${CPPFLAGS} -O2" \
 		"$@"
 
-	echo "Running: cmake $@"
+	echo -n "Running: cmake "
+	printargs "$@"
+
+	if [ "$CMAKE_DEBUG" != "" ]; then
+		/bin/bash -i; exit 1
+	fi
 	cmake "$@" || return $?
 
 	echo "Invoking compiler..."

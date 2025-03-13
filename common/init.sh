@@ -681,6 +681,13 @@ die() {
 	exit 1
 }
 
+printargs() {
+	for arg in "$@"; do
+		printf ' %q' "$arg"
+	done
+	echo
+}
+
 # eg: makepkgconfig -lduktape
 makepkgconfig() {
 	local LIBS="$1"
