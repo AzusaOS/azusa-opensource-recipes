@@ -1,0 +1,13 @@
+--- ./erigon-lib/chain/snapcfg/util.go.prev	2025-03-31 20:40:56.276474627 +0900
++++ ./erigon-lib/chain/snapcfg/util.go	2025-03-31 20:41:27.590128132 +0900
+@@ -569,7 +569,9 @@
+ func LoadRemotePreverified(ctx context.Context) (loaded bool, err error) {
+ 	loaded, err = snapshothashes.LoadSnapshots(ctx, snapshotGitBranch)
+ 	if err != nil {
+-		return false, err
++		// error is not fatal, we can still start with the embedded version
++		_ = err
++		//return false, err
+ 	}
+ 
+ 	// Re-load the preverified hashes
