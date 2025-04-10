@@ -18,16 +18,6 @@ importpkg libxml-2.0 icu-uc sci-mathematics/z3 zlib dev-libs/libedit
 #export CPPFLAGS="${CPPFLAGS} -isystem /pkg/main/sys-libs.glibc.dev.${OS}.${ARCH}/include"
 export C_INCLUDE_PATH="$C_INCLUDE_PATH:/pkg/main/sys-libs.glibc.dev.${OS}.${ARCH}/include"
 
-# do we already have a boostrapped llvm?
-if [ -d /pkg/main/sys-devel.llvm-bootstrap.data ]; then
-	#export CC=/pkg/main/sys-devel.llvm-bootstrap.data/bin/clang
-	# ensure -lc++ can be found
-	export LIBRARY_PATH="${LIBRARY_PATH}:/pkg/main/sys-devel.llvm-bootstrap.data/lib$LIB_SUFFIX/$CHOST"
-else
-	# fallback on hopefully installed libcxx
-	export LIBRARY_PATH="${LIBRARY_PATH}:/pkg/main/sys-libs.libcxx.libs/lib$LIB_SUFFIX:/pkg/main/sys-libs.libcxxabi.libs/lib$LIB_SUFFIX"
-fi
-
 # importpkg will set CPPFLAGS but that's not read by llvm
 export CFLAGS="${CPPFLAGS}"
 export CXXFLAGS="${CPPFLAGS}"

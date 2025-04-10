@@ -9,7 +9,7 @@ S="$S/llvm"
 
 cd "${T}"
 
-importpkg libxml-2.0 icu-uc sci-mathematics/z3 zlib dev-libs/libedit
+importpkg libxml-2.0 icu-uc sci-mathematics/z3 zlib dev-libs/libedit sys-libs/libxcrypt
 
 # Testing the c++ compiler:
 # echo -e '#include <iostream>\nint main() { std::cout << "hello world" << std::endl; return 0; }' | /pkg/main/sys-devel.llvm-bootstrap.data/bin/clang++ -x c++ -o test -
@@ -72,13 +72,10 @@ CMAKE_OPTS=(
 	-DCLANG_BOOTSTRAP_PASSTHROUGH="DEFAULT_SYSROOT;CMAKE_SYSTEM_INCLUDE_PATH;CMAKE_SYSTEM_LIBRARY_PATH;LLVM_HOST_TRIPLE;LLVM_LIBDIR_SUFFIX;ZLIB_LIBRARY;ZLIB_INCLUDE_DIR;LIBCXXABI_USE_LLVM_UNWINDER;CLANG_DEFAULT_CXX_STDLIB;CLANG_CONFIG_FILE_SYSTEM_DIR"
 )
 
-# make it possible to find libc++ during build
-export LD_LIBRARY_PATH="${T}/lib$LIB_SUFFIX/${CHOST}"
-
 # do not use llvmbuild since we are building llvm itself
 # do not use docmake either since we want this to be contained in a data dir
 cmake -S "${S}" -B "${T}" -G Ninja -Wno-dev "${CMAKE_OPTS[@]}"
-ninja -j"$NPROC" -v stage2 || /bin/bash -i
+ninja -j"$NPROC" -v stage2
 
 if [ x"$LIB_SUFFIX" != x ]; then
 	# pre-create a symlink for lib → lib$LIB_SUFFIX
@@ -87,6 +84,11 @@ if [ x"$LIB_SUFFIX" != x ]; then
 fi
 
 DESTDIR="${D}" ninja -j"$NPROC" -v stage2-install
+
+# fix config_site, move it so it's found (that's probably ok to do here because we only support one arch)
+mv -v "${D}/pkg/main/${PKG}.data.${PVRF}/include/$CHOST/c++/v1/__config_site" "${D}/pkg/main/${PKG}.data.${PVRF}/include/c++/v1/__config_site"
+rmdir "${D}/pkg/main/${PKG}.data.${PVRF}/include/$CHOST/c++/v1"
+rmdir "${D}/pkg/main/${PKG}.data.${PVRF}/include/$CHOST/c++"
 
 mkdir -p "${D}/pkg/main/${PKG}.data.${PVRF}/config"
 echo "@clang-common.cfg" >"${D}/pkg/main/${PKG}.data.${PVRF}/config/clang.cfg"
