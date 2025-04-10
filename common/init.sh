@@ -403,6 +403,10 @@ archive() {
 			if [ -d "${D}/pkg/main/${PKG}.libs.${PVRF}/$sub" ]; then
 				if [ ! -L "${D}/pkg/main/${PKG}.libs.${PVRF}/$sub" ]; then
 					echo "/pkg/main/${PKG}.libs.${PVRF}/$sub" >>"${D}/pkg/main/${PKG}.libs.${PVRF}/.ld.so.conf"
+					if [ -d "${D}/pkg/main/${PKG}.libs.${PVRF}/$sub/$CHOST" ]; then
+						# add this too
+						echo "/pkg/main/${PKG}.libs.${PVRF}/$sub/$CHOST" >>"${D}/pkg/main/${PKG}.libs.${PVRF}/.ld.so.conf"
+					fi
 				fi
 			fi
 		done
@@ -564,7 +568,22 @@ importcmakepkg() {
 importpkg() {
 	local PKGCFG=""
 	for foo in "$@"; do
-		if [[ $foo == */* ]]; then
+		if [[ $foo == /* ]]; then
+			# an absolute path
+			if [ -d "$foo/include" ]; then
+				export CPPFLAGS="$CPPFLAGS -I${foo}/include"
+				export CPATH="$CPATH:${foo}/include"
+				export CMAKE_SYSTEM_INCLUDE_PATH="${CMAKE_SYSTEM_INCLUDE_PATH};${foo}/include"
+				export C_INCLUDE_PATH="$C_INCLUDE_PATH:${foo}/include"
+			fi
+			if [ -d "${foo}/lib$LIB_SUFFIX" ]; then
+				export LDFLAGS="$LDFLAGS -L${foo}/lib$LIB_SUFFIX"
+				export CMAKE_SYSTEM_LIBRARY_PATH="${CMAKE_SYSTEM_LIBRARY_PATH};${foo}/lib$LIB_SUFFIX"
+				export RUSTFLAGS="${RUSTFLAGS} -L${foo}/lib$LIB_SUFFIX"
+				export LIBRARY_PATH="$LIBRARY_PATH:${foo}/lib$LIB_SUFFIX"
+				export LIBRARY_PATH="${LIBRARY_PATH/:}"
+			fi
+		elif [[ $foo == */* ]]; then
 			local vers=""
 			if [[ $foo == */*:* ]]; then
 				vers=".$(echo "$foo" | cut -d: -f2)"

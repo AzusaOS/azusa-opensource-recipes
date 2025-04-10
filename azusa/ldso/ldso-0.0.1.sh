@@ -31,6 +31,10 @@ scanlibs() {
 		for foo in $LIBS; do
 			if [ -d "${p}/$foo" -a ! -L "${p}/$foo" ]; then
 				echo "${p}/$foo" >>etc/ld.so.conf.tmp
+				if [ -d "${p}/$foo/$2" ]; then
+					# some libs use this kind of paths for special libs
+					echo "${p}/$foo/$2" >>etc/ld.so.conf.tmp
+				fi
 			fi
 		done
 	done
@@ -39,11 +43,11 @@ scanlibs() {
 case $ARCH in
 	amd64)
 		# amd64 → also scan 32bits libs (scan first so they are lower priority)
-		scanlibs "${OS}.386"
+		scanlibs "${OS}.386" "i686-pc-linux-gnu"
 		;;
 esac
 
-scanlibs "${OS}.${ARCH}"
+scanlibs "${OS}.${ARCH}" "$CHOST"
 
 # reverse order in ld.so.conf so newer versions are on top and taken in priority
 tac etc/ld.so.conf.tmp >etc/ld.so.conf

@@ -37,4 +37,29 @@ case $ARCH in
 		exit 1
 esac
 
+# chost_for_arch is a simple helper for when we need the chost of a given arch
+chost_for_arch() {
+	case "$1" in
+		i?86|386)
+			echo i686-pc-linux-gnu
+			return
+			;;
+		x86_64|amd64)
+			echo x86_64-pc-linux-gnu
+			return
+			;;
+		aarch64)
+			echo aarch64-unknown-linux-gnu
+			return
+			;;
+		ppc64le)
+			echo ppc64le-unknown-linux-gnu
+			return
+			;;
+		*)
+			echo "Unsupported arch: $1"
+			exit 1
+	esac
+}
+
 # armv7-unknown-linux-gnueabi
