@@ -17,7 +17,7 @@ https://github.com/llvm/llvm-project/issues/119793
            }
          }
        }
-@@ -3332,6 +3338,25 @@
+@@ -3332,6 +3338,23 @@
    const Multilib &Multilib = GCCInstallation.getMultilib();
    const GCCVersion &Version = GCCInstallation.getVersion();
  
@@ -33,9 +33,7 @@ https://github.com/llvm/llvm-project/issues/119793
 +      IncludePath = InstallDir.str() + "/include/" + StdCxxIncDir.str();
 +    }
 +    
-+    if (addLibStdCXXIncludePaths(IncludePath, /*Suffix*/ "", TripleStr,
-+                            /*GCCMultiarchTriple*/ "",
-+                            /*TargetMultiarchTriple*/ "",
++    if (addLibStdCXXIncludePaths(IncludePath, TripleStr,
 +                            Multilib.includeSuffix(), DriverArgs, CC1Args))
 +      return true;
 +  }
