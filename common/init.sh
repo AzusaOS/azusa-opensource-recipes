@@ -583,6 +583,13 @@ importpkg() {
 				export LIBRARY_PATH="$LIBRARY_PATH:${foo}/lib$LIB_SUFFIX"
 				export LIBRARY_PATH="${LIBRARY_PATH/:}"
 			fi
+			if [ -d "${foo}/lib$LIB_SUFFIX/$CHOST" ]; then
+				export LDFLAGS="$LDFLAGS -L${foo}/lib$LIB_SUFFIX/$CHOST"
+				export CMAKE_SYSTEM_LIBRARY_PATH="${CMAKE_SYSTEM_LIBRARY_PATH};${foo}/lib$LIB_SUFFIX/$CHOST"
+				export RUSTFLAGS="${RUSTFLAGS} -L${foo}/lib$LIB_SUFFIX/$CHOST"
+				export LIBRARY_PATH="$LIBRARY_PATH:${foo}/lib$LIB_SUFFIX/$CHOST"
+				export LIBRARY_PATH="${LIBRARY_PATH/:}"
+			fi
 		elif [[ $foo == */* ]]; then
 			local vers=""
 			if [[ $foo == */*:* ]]; then

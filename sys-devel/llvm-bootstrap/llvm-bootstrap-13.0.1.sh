@@ -7,9 +7,12 @@ acheck
 
 S="$S/llvm"
 
+cd "${S}"
+sed -i -e '17i #include <cstdint>' include/llvm/Support/Signals.h
+
 cd "${T}"
 
-importpkg libxml-2.0 icu-uc sci-mathematics/z3 zlib dev-libs/libedit
+importpkg libxml-2.0 icu-uc sci-mathematics/z3 zlib dev-libs/libedit sys-libs/libxcrypt
 
 # Testing the c++ compiler:
 # echo -e '#include <iostream>\nint main() { std::cout << "hello world" << std::endl; return 0; }' | /pkg/main/sys-devel.llvm-bootstrap.data/bin/clang++ -x c++ -o test -
@@ -32,6 +35,8 @@ fi
 export CFLAGS="${CPPFLAGS}"
 export CXXFLAGS="${CPPFLAGS}"
 
+NPROC=2
+
 # make sure previous config doesn't cause issues
 rm -fr /pkg/main/${PKG}.data.${PVRF}/config
 
@@ -41,6 +46,9 @@ CMAKE_OPTS=(
 	-DCMAKE_INSTALL_PREFIX="/pkg/main/${PKG}.data.${PVRF}" # use data to avoid addition to PATH
 
 	-C "$S/../clang/cmake/caches/DistributionExample.cmake"
+
+	# add libunwind to avoid some issues on the next steps
+	-DLLVM_ENABLE_RUNTIMES="compiler-rt;libcxx;libcxxabi;libunwind"
 
 	-DCMAKE_C_FLAGS="${CPPFLAGS} -O2"
 	-DCMAKE_CXX_FLAGS="${CPPFLAGS} -O2"
@@ -85,6 +93,11 @@ if [ x"$LIB_SUFFIX" != x ]; then
 fi
 
 DESTDIR="${D}" ninja -j"$NPROC" -v stage2-install
+
+# fix config_site, move it so it's found (that's probably ok to do here because we only support one arch)
+mv -v "${D}/pkg/main/${PKG}.data.${PVRF}/include/$CHOST/c++/v1/__config_site" "${D}/pkg/main/${PKG}.data.${PVRF}/include/c++/v1/__config_site"
+rmdir "${D}/pkg/main/${PKG}.data.${PVRF}/include/$CHOST/c++/v1"
+rmdir "${D}/pkg/main/${PKG}.data.${PVRF}/include/$CHOST/c++"
 
 mkdir -p "${D}/pkg/main/${PKG}.data.${PVRF}/config"
 echo "@clang-common.cfg" >"${D}/pkg/main/${PKG}.data.${PVRF}/config/clang.cfg"

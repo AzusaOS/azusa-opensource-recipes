@@ -1,0 +1,66 @@
+See for details:
+
+https://github.com/llvm/llvm-project/issues/119793
+
+--- a/clang/lib/Driver/ToolChains/Gnu.cpp	2025-04-13 19:32:35.863166360 +0900
++++ b/clang/lib/Driver/ToolChains/Gnu.cpp	2025-04-13 19:40:35.117869309 +0900
+@@ -2592,6 +2592,12 @@
+             ConfLine.consume_front("\"");
+             // Get all paths sperated by ':'
+             ConfLine.split(GentooScanPaths, ':', -1, /*AllowEmpty*/ false);
++          } else if (ConfLine.consume_front("STDCXX_INCDIR=")) {
++            // Drop '"' from front and back if present.
++            ConfLine.consume_back("\"");
++            ConfLine.consume_front("\"");
++            // Store the C++ include directory path
++            StdCxxIncDir = ConfLine.str();
+           }
+         }
+       }
+@@ -2969,6 +2975,25 @@
+       getMultiarchTriple(getDriver(), getTriple(), getDriver().SysRoot);
+   const GCCVersion &Version = GCCInstallation.getVersion();
+ 
++  // First check if we have STDCXX_INCDIR from a Gentoo GCC config file
++  StringRef StdCxxIncDir = GCCInstallation.getStdCxxIncDir();
++  if (!StdCxxIncDir.empty()) {
++    std::string IncludePath;
++    if (llvm::sys::path::is_absolute(StdCxxIncDir)) {
++      // If StdCxxIncDir is absolute, use it directly with SysRoot
++      IncludePath = getDriver().SysRoot + StdCxxIncDir.str();
++    } else {
++      // If StdCxxIncDir is relative, it's relative to gcc's install path
++      IncludePath = InstallDir.str() + "/include/" + StdCxxIncDir.str();
++    }
++    
++    if (addLibStdCXXIncludePaths(IncludePath, /*Suffix*/ "", TripleStr,
++                              /*GCCMultiarchTriple*/ "",
++                              /*TargetMultiarchTriple*/ "",
++                              Multilib.includeSuffix(), DriverArgs, CC1Args))
++      return true;
++  }
++
+   // The primary search for libstdc++ supports multiarch variants.
+   if (addLibStdCXXIncludePaths(LibDir.str() + "/../include",
+                                "/c++/" + Version.Text, TripleStr,
+--- a/clang/lib/Driver/ToolChains/Gnu.h	2025-04-13 19:35:29.948208251 +0900
++++ b/clang/lib/Driver/ToolChains/Gnu.h	2025-04-13 19:34:32.960982300 +0900
+@@ -196,6 +196,8 @@
+     // FIXME: These might be better as path objects.
+     std::string GCCInstallPath;
+     std::string GCCParentLibPath;
++    // STDCXX_INCDIR value from Gentoo's GCC config
++    std::string StdCxxIncDir;
+ 
+     /// The primary multilib appropriate for the given flags.
+     Multilib SelectedMultilib;
+@@ -229,6 +231,9 @@
+     /// Get the detected GCC parent lib path.
+     StringRef getParentLibPath() const { return GCCParentLibPath; }
+ 
++    /// Get the detected STDCXX_INCDIR path from Gentoo config.
++    StringRef getStdCxxIncDir() const { return StdCxxIncDir; }
++
+     /// Get the detected Multilib
+     const Multilib &getMultilib() const { return SelectedMultilib; }
+ 

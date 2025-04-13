@@ -5,6 +5,9 @@ source "../../common/init.sh"
 CATEGORY=sys-devel PN=llvm get https://github.com/llvm/llvm-project/releases/download/llvmorg-${PV}/llvm-project-${PV}.src.tar.xz
 acheck
 
+cd "${S}"
+apatch "$FILESDIR/llvm-20.1.2_gentoo_search_path.patch"
+
 S="$S/llvm"
 
 cd "${T}"
@@ -13,6 +16,11 @@ importpkg libxml-2.0 icu-uc sci-mathematics/z3 zlib dev-libs/libedit
 
 # Testing the c++ compiler:
 # echo -e '#include <iostream>\nint main() { std::cout << "hello world" << std::endl; return 0; }' | /pkg/main/sys-devel.llvm-bootstrap.data/bin/clang++ -x c++ -o test -
+
+# checking llvm paths:
+# /pkg/main/sys-devel.llvm-bootstrap.data.11/bin/clang++ --stdlib=libstdc++ -E -x c++ - -v < /dev/null
+# /pkg/main/sys-devel.llvm-bootstrap.data.11/bin/clang++ --stdlib=libc++ -E -x c++ - -v < /dev/null
+# /pkg/main/sys-devel.llvm-bootstrap.data.11/bin/clang++ --print-search-dirs
 
 # somehow, clang fails to find the system includes at some point
 #export CPPFLAGS="${CPPFLAGS} -isystem /pkg/main/sys-libs.glibc.dev.${OS}.${ARCH}/include"
@@ -41,6 +49,10 @@ CMAKE_OPTS=(
 	-DCMAKE_SYSTEM_INCLUDE_PATH="${CMAKE_SYSTEM_INCLUDE_PATH}"
 	-DCMAKE_SYSTEM_LIBRARY_PATH="${CMAKE_SYSTEM_LIBRARY_PATH}"
 	-DLLVM_INCLUDE_TESTS=OFF
+	-DLLVM_PARALLEL_LINK_JOBS=2
+
+	# add libunwind to avoid some issues on the next steps
+	-DLLVM_ENABLE_RUNTIMES="compiler-rt;libcxx;libcxxabi;libunwind"
 
 	-DZLIB_LIBRARY=/pkg/main/sys-libs.zlib.libs.${OS}.${ARCH}/lib$LIB_SUFFIX/libz.so
 	-DZLIB_INCLUDE_DIR=/pkg/main/sys-libs.zlib.dev.${OS}.${ARCH}/include
@@ -63,7 +75,7 @@ CMAKE_OPTS=(
 	-DCLANG_CONFIG_FILE_SYSTEM_DIR="/pkg/main/${PKG}.data.${PVRF}/config"
 
 	# ensure DEFAULT_SYSROOT is passed to the subsequent clang
-	-DCLANG_BOOTSTRAP_PASSTHROUGH="DEFAULT_SYSROOT;CMAKE_SYSTEM_INCLUDE_PATH;CMAKE_SYSTEM_LIBRARY_PATH;LLVM_HOST_TRIPLE;LLVM_LIBDIR_SUFFIX;ZLIB_LIBRARY;ZLIB_INCLUDE_DIR;LIBCXXABI_USE_LLVM_UNWINDER;CLANG_DEFAULT_CXX_STDLIB;CLANG_CONFIG_FILE_SYSTEM_DIR"
+	-DCLANG_BOOTSTRAP_PASSTHROUGH="DEFAULT_SYSROOT;CMAKE_SYSTEM_INCLUDE_PATH;CMAKE_SYSTEM_LIBRARY_PATH;LLVM_HOST_TRIPLE;LLVM_LIBDIR_SUFFIX;ZLIB_LIBRARY;ZLIB_INCLUDE_DIR;LIBCXXABI_USE_LLVM_UNWINDER;CLANG_DEFAULT_CXX_STDLIB;CLANG_CONFIG_FILE_SYSTEM_DIR;LLVM_PARALLEL_LINK_JOBS"
 )
 
 # make it possible to find libc++ during build
