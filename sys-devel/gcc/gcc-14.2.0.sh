@@ -48,12 +48,8 @@ find "${D}" -name '*.la' -delete
 TRIPLE="$("${D}/pkg/main/${PKG}.core.${PVRF}/bin/gcc" -dumpmachine)"
 VERS="$("${D}/pkg/main/${PKG}.core.${PVRF}/bin/gcc" -dumpversion)"
 
-# [try to] allow clang++ to find the various c++ includes
-# Would be nice if clang could depend on gcc-config for this path, but it doesn't
-# See: https://github.com/llvm/llvm-project/issues/119793
-ln -snfv "." "${D}/pkg/main/${PKG}.dev.${PVRF}/include/c++/$VERS"
-ln -snfv "/pkg/main/sys-libs.libcxx.dev/include/c++/v1" "${D}/pkg/main/${PKG}.dev.${PVRF}/include/c++/v1"
-ln -snfv "/pkg/main/${PKG}.dev.${PVRF}/include/c++" "${D}/pkg/main/${PKG}.libs.${PVRF}/lib$LIB_SUFFIX/gcc/$TRIPLE/$VERS/include/g++-v$VERS"
+# fix for clang looking into /pkg/main/sys-libs.glibc.dev.linux.amd64/pkg/main/sys-devel.gcc.libs.14.2.0.linux.amd64/lib64/gcc/x86_64-pc-linux-gnu/14/../../../../x86_64-pc-linux-gnu/bin
+ln -snfv "/pkg/main/${PKG}.core.${PVRF}" "${D}/pkg/main/${PKG}.libs.${PVRF}/${CHOST}"
 
 mkdir -p "${D}/pkg/main/${PKG}.dev.${PVRF}/gcc-config"
 echo "CURRENT=${TRIPLE}-${PV}" >"${D}/pkg/main/${PKG}.dev.${PVRF}/gcc-config/config-${TRIPLE}"

@@ -52,6 +52,9 @@ find "${D}" -name '*.la' -delete
 TRIPLE="$("${D}/pkg/main/${PKG}.core.${PVRF}/bin/gcc" -dumpmachine)"
 VERS="$("${D}/pkg/main/${PKG}.core.${PVRF}/bin/gcc" -dumpversion)"
 
+# fix for clang looking into /pkg/main/sys-libs.glibc.dev.linux.amd64/pkg/main/sys-devel.gcc.libs.14.2.0.linux.amd64/lib64/gcc/x86_64-pc-linux-gnu/14/../../../../x86_64-pc-linux-gnu/bin
+ln -snfv "/pkg/main/${PKG}.core.${PVRF}" "${D}/pkg/main/${PKG}.libs.${PVRF}/${CHOST}"
+
 mkdir -p "${D}/pkg/main/${PKG}.dev.${PVRF}/gcc-config"
 echo "CURRENT=${TRIPLE}-${PV}" >"${D}/pkg/main/${PKG}.dev.${PVRF}/gcc-config/config-${TRIPLE}"
 
