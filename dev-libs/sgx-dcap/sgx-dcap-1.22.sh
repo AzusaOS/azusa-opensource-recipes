@@ -34,7 +34,23 @@ echo "#include \"/pkg/main/sys-libs.glibc.dev/include/bits/confname.h\"" >>"/usr
 
 make dcap
 
-/bin/bash -i
-exit 1
+# move stuff
+mkdir -p "${D}/pkg/main/${PKG}.core.${PVRF}"
+
+# tdx-qgs tee-appraisal-tool
+for pkg in libsgx-ae-id-enclave libsgx-ae-qe3 libsgx-ae-qve libsgx-ae-tdqe libsgx-dcap-default-qpl libsgx-dcap-ql libsgx-dcap-quote-verify libsgx-pce-logic libsgx-qe3-logic libsgx-tdx-logic libtdx-attest; do
+	./installer/linux/common/$pkg/createTarball.sh
+	# for each package
+	find installer/linux/common/$pkg/output -ls
+	if [ -d installer/linux/common/$pkg/output/pkgroot ]; then
+		for foo in ./installer/linux/common/$pkg/output/pkgroot/*; do
+			rsync -av --progress "$foo"/ "${D}/pkg/main/${PKG}.core.${PVRF}/"
+		done
+	else
+		if [ -d installer/linux/common/$pkg/output/lib ]; then
+			rsync -av --progress installer/linux/common/$pkg/output/lib "${D}/pkg/main/${PKG}.core.${PVRF}/"
+		fi
+	fi
+done
 
 finalize
