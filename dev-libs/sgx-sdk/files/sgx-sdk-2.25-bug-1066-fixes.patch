@@ -1,0 +1,47 @@
+diff '--color=auto' -bBrU3 linux-sgx-sgx_2.25_orig/psw/ae/aesm_service/source/CMakeLists.txt linux-sgx-sgx_2.25/psw/ae/aesm_service/source/CMakeLists.txt
+--- linux-sgx-sgx_2.25_orig/psw/ae/aesm_service/source/CMakeLists.txt	2025-04-14 19:25:46.476855214 +0900
++++ linux-sgx-sgx_2.25/psw/ae/aesm_service/source/CMakeLists.txt	2025-04-14 19:26:50.157510240 +0900
+@@ -61,7 +61,7 @@
+ endif()
+ 
+ set(CMAKE_CXX_STANDARD_REQUIRED 1)
+-set(CMAKE_CXX_STANDARD 11)
++set(CMAKE_CXX_STANDARD 17)
+ set(CMAKE_SKIP_BUILD_RPATH true)
+ 
+ ########## SGX SDK Settings ##########
+diff '--color=auto' -bBrU3 linux-sgx-sgx_2.25_orig/psw/enclave_common/sgx_enclave_common.cpp linux-sgx-sgx_2.25/psw/enclave_common/sgx_enclave_common.cpp
+--- linux-sgx-sgx_2.25_orig/psw/enclave_common/sgx_enclave_common.cpp	2025-04-14 19:25:46.480188582 +0900
++++ linux-sgx-sgx_2.25/psw/enclave_common/sgx_enclave_common.cpp	2025-04-14 19:29:23.615755538 +0900
+@@ -35,6 +35,7 @@
+ #include <dlfcn.h>
+ #include <map>
+ #include <functional>
++#include <algorithm>
+ #include "sgx_enclave_common.h"
+ #include "sgx_urts.h"
+ #include "arch.h"
+diff '--color=auto' -bBrU3 linux-sgx-sgx_2.25_orig/sdk/cpprt/linux/libunwind/autogen.sh linux-sgx-sgx_2.25/sdk/cpprt/linux/libunwind/autogen.sh
+--- linux-sgx-sgx_2.25_orig/sdk/cpprt/linux/libunwind/autogen.sh	2025-04-14 19:25:46.483521950 +0900
++++ linux-sgx-sgx_2.25/sdk/cpprt/linux/libunwind/autogen.sh	2025-04-14 19:27:33.727958405 +0900
+@@ -4,7 +4,9 @@
+ test -n "$srcdir" || srcdir=.
+ (
+   cd "$srcdir" &&
++  libtoolize &&
+   autoreconf --force -v --install
++  sed -i -e 's/-V -qversion -version//' "$srcdir/configure"
+ ) || exit
+ 
+ CFLAGS="$CFLAGS -std=c99 -fno-builtin -DHAVE_SGX=1 -fPIC -DUNW_LOCAL_ONLY -fdebug-prefix-map=$(pwd)=/libunwind"
+diff '--color=auto' -bBrU3 linux-sgx-sgx_2.25_orig/sdk/tlibc/time/strptime.c linux-sgx-sgx_2.25/sdk/tlibc/time/strptime.c
+--- linux-sgx-sgx_2.25_orig/sdk/tlibc/time/strptime.c	2025-04-14 19:25:46.503522155 +0900
++++ linux-sgx-sgx_2.25/sdk/tlibc/time/strptime.c	2025-04-14 19:26:38.630725006 +0900
+@@ -89,7 +89,6 @@
+ {
+ 	return(_strptime(buf, fmt, tm, 1));
+ }
+-DEF_WEAK(strptime);
+ 
+ static char *
+ _strptime(const char *buf, const char *fmt, struct tm *tm, int initialize)
