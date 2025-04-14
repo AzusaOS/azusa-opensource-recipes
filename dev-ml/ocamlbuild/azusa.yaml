@@ -1,0 +1,3 @@
+description: Generic build tool with built-in rules for building OCaml library and programs
+homepage: https://github.com/ocaml/ocamlbuild
+license: LGPL-2.1-with-linking-exception
