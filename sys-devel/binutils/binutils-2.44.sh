@@ -13,7 +13,6 @@ export LIB_PATH=/lib:/pkg/main/sys-devel.gcc.libs/lib$LIB_SUFFIX:/pkg/main/sys-l
 cd "${T}"
 
 CONFOPTS=(
-	--enable-gold
 	--enable-ld=default
 	--enable-plugins
 	--enable-shared
@@ -29,5 +28,10 @@ doconf "${CONFOPTS[@]}"
 
 make
 make install DESTDIR="${D}"
+
+cd "${D}/pkg/main/${PKG}.core.${PVRF}/bin"
+for foo in *; do
+	ln -snfv "$foo" "${CHOST}-${foo}"
+done
 
 finalize
