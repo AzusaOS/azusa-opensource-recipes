@@ -1,0 +1,3 @@
+description: Library to parse and apply unified diffs.
+homepage: https://github.com/conan-io/python-patch
+license: MIT
