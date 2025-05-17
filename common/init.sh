@@ -590,6 +590,10 @@ importpkg() {
 				export LIBRARY_PATH="$LIBRARY_PATH:${foo}/lib$LIB_SUFFIX/$CHOST"
 				export LIBRARY_PATH="${LIBRARY_PATH/:}"
 			fi
+			if [ -d "${foo}/share/pkgconfig" ]; then
+				export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:${foo}/share/pkgconfig"
+				export PKG_CONFIG_PATH="${PKG_CONFIG_PATH/:}"
+			fi
 		elif [[ $foo == */* ]]; then
 			local vers=""
 			if [[ $foo == */*:* ]]; then

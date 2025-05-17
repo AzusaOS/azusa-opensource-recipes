@@ -12,8 +12,6 @@ importpkg zlib
 
 ./config --prefix=/pkg/main/${PKG}.core.${PVRF} --openssldir=/etc/ssl --libdir=lib$LIB_SUFFIX shared zlib-dynamic
 
-/bin/bash -i
-
 make -j"$NPROC"
 make install MANSUFFIX=ssl DESTDIR="${D}"
 

@@ -32,7 +32,8 @@ if [ ! -f /bin/arch ]; then
 	chmod +x /bin/arch
 fi
 
-importpkg dev-libs/openssl /pkg/main/sys-devel.llvm-bootstrap.data.11
+. /pkg/main/dev-libs.sgx-sdk-bin.dev/environment
+importpkg dev-libs/openssl /pkg/main/sys-devel.llvm-bootstrap.data.11 dev-libs/sgx-dcap
 
 # force llvm 11
 
@@ -43,16 +44,26 @@ echo '--stdlib=libstdc++' >"$CLANG_PATH/config/clang-cxx.cfg"
 export PATH="/pkg/main/sys-devel.dart.dev/bin:${CLANG_PATH}/bin:$PATH"
 export CC="${CLANG_PATH}/bin/clang"
 export CXX="${CLANG_PATH}/bin/clang++"
-rm -f /bin/clang /bin/clang++
+rm -f /bin/clang /bin/clang++ /bin/go
 
 # fix lib path if libsuffix isn't ''
 sed -i -e 's#openenclave-install/lib/openenclave#openenclave-install/lib64/openenclave#' "${S}/src/CMakeLists.txt"
 
-# do not use docmake since it'll break a bunch of stuff
+# do not use docmake since we want everything in dev
 # for example "lib64" dir name for libs isn't supported
-#cmake -GNinja "${S}" -DCMAKE_INSTALL_PREFIX="/pkg/main/${PKG}.dev.${PVRF}"
-#ninja -j1 || /bin/bash -i
-#DESTDIR="${D}" ninja -j1 install
-docmake || /bin/bash -i
+cmake -GNinja "${S}" -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX="/pkg/main/${PKG}.dev.${PVRF}"
+ninja -j1 || /bin/bash -i
+OE_SIMULATION=1 ctest
+DESTDIR="${D}" ninja -j1 install
+#docmake
 
+# fix path in lib64/openenclave/cmake/openenclave-targets.cmake
+# contains: set(_IMPORT_PREFIX "/build/edgelessrt-0.4.9/temp/3rdparty/openenclave/openenclave-install")
+# contains: set(_IMPORT_PREFIX "/build/edgelessrt-0.4.9/temp/ertcore-install")
+echo "Fixing dir paths..."
+find "${D}" -name '*.cmake' -o -name '*.pc'
+find "${D}" -name '*.cmake' -o -name '*.pc' | xargs sed -i -e "s#${T}/3rdparty/openenclave/openenclave-install#/pkg/main/${PKG}.dev.${PVRF}#"
+find "${D}" -name '*.cmake' -o -name '*.pc' | xargs sed -i -e "s#${T}/ertcore-install#/pkg/main/${PKG}.dev.${PVRF}#"
+
+fixelf
 archive

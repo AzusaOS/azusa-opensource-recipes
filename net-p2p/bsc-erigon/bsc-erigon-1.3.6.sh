@@ -2,7 +2,7 @@
 source "../../common/init.sh"
 
 # hardcoded revision
-fetchgit https://github.com/node-real/bsc-erigon.git 78a576f
+fetchgit https://github.com/node-real/bsc-erigon.git "v${PV}"
 
 envcheck
 # do not use acheck so we keep networking
