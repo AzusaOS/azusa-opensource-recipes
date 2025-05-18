@@ -2,4 +2,4 @@
 source "../../common/init.sh"
 source "$BASEDIR/nvidia-drivers.sh"
 
-nvidia_process_xfree86
+nvidia_process_redist
