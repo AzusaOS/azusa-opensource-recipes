@@ -2,13 +2,12 @@
 source "../../common/init.sh"
 inherit python
 
-get https://boostorg.jfrog.io/artifactory/main/release/${PV}/source/boost_${PV//./_}.tar.bz2
+get https://archives.boost.io/release/${PV}/source/boost_${PV//./_}.tar.bz2
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-1.81.0-disable_icu_rpath.patch
 	"${FILESDIR}"/${PN}-1.79.0-build-auto_index-tool.patch
 	# Boost.MPI's __init__.py doesn't work on Py3
-	"${FILESDIR}"/${PN}-1.79.0-boost-mpi-python-PEP-328.patch
 	"${FILESDIR}"/${PN}-1.81.0-phoenix-multiple-definitions.patch
 )
 
