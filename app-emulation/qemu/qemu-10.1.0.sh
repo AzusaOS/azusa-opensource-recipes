@@ -4,10 +4,6 @@ source "../../common/init.sh"
 get https://download.qemu.org/${P}.tar.xz
 acheck
 
-cd "${S}"
-
-apatch "$FILESDIR/qemu-8.0.0-fix-syscalls.patch"
-
 cd "${T}"
 
 # --audio-drv-list=oss,alsa,sdl,pa

@@ -3,7 +3,7 @@ source "../../common/init.sh"
 
 if [ ! -d "/pkg/main/${PKG}.src.${PV}.linux.any" ]; then
 	echo "Dir /pkg/main/${PKG}.src.${PV}.linux.any not found"
-	get https://cdn.kernel.org/pub/linux/kernel/v5.x/${P}.tar.xz
+	get https://cdn.kernel.org/pub/linux/kernel/v6.x/${P}.tar.xz
 
 	mkdir -p "${D}/pkg/main"
 	mv "${P}" "${D}/pkg/main/${PKG}.src.${PV}.linux.any"
