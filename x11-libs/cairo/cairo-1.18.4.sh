@@ -6,7 +6,7 @@ acheck
 
 cd "${T}"
 
-importpkg zlib
+importpkg zlib dev-libs/lzo
 
 domeson
 
