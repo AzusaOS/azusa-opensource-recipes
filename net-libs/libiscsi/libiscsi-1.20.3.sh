@@ -9,6 +9,7 @@ cd "${S}"
 aautoreconf
 
 #cd "${T}"
+importpkg dev-util/cunit
 
 doconf
 

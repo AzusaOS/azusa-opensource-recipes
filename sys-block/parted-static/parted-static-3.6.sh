@@ -4,6 +4,10 @@ source "../../common/init.sh"
 get https://ftp.gnu.org/gnu/parted/parted-${PV}.tar.xz
 acheck
 
+cd "${S}"
+
+apatch "$FILESDIR/parted-3.6-c23.patch"
+
 cd "${T}"
 
 importpkg sys-apps/util-linux sys-fs/lvm2 sys-libs/readline sys-libs/ncurses

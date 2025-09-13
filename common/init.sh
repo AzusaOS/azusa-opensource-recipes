@@ -759,6 +759,10 @@ dobin() {
 	install -v -D --preserve-timestamps --target-directory="${D}/pkg/main/${PKG}.core.${PVRF}/bin" "$@"
 }
 
+dosbin() {
+	install -v -D --preserve-timestamps --target-directory="${D}/pkg/main/${PKG}.core.${PVRF}/sbin" "$@"
+}
+
 doman() {
 	# depending on the file's suffix (.1, .2, etc) install into different dir
 	local f

@@ -6,7 +6,7 @@ acheck
 
 cd "${T}"
 
-importpkg gmp sys-libs/libunwind zlib
+importpkg gmp sys-libs/libunwind zlib sys-libs/libcap dev-util/valgrind
 
 domeson -Dgst_debug=false -Dpackage-origin=http://www.linuxfromscratch.org/blfs/view/svn/ -Dpackage-name="GStreamer 1.16.2 BLFS"
 

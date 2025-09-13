@@ -2,7 +2,7 @@
 source "../../common/init.sh"
 
 MY_PN=Vulkan-Loader
-get https://github.com/KhronosGroup/${MY_PN}/archive/sdk-${PV}.tar.gz ${P}.tar.gz
+get https://github.com/KhronosGroup/${MY_PN}/archive/vulkan-sdk-${PV}.tar.gz ${P}.tar.gz
 acheck
 
 cd "${T}"

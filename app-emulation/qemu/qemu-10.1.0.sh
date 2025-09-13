@@ -9,8 +9,7 @@ cd "${T}"
 # --audio-drv-list=oss,alsa,sdl,pa
 
 importpkg media-libs/alsa-lib sys-fs/udev media-libs/libepoxy egl dev-libs/libaio sys-libs/libcap-ng app-arch/bzip2 dev-libs/jemalloc dev-libs/libgcrypt net-libs/libssh2 dev-libs/lzo app-arch/snappy sys-process/numactl zlib dev-libs/pmdk sys-block/ndctl sys-libs/liburing gdk-pixbuf-2.0 dev-libs/capstone sys-apps/dtc net-libs/gnutls
-# sys-kernel/linux
-export CPPFLAGS="${CPPFLAGS} -I/pkg/main/sys-kernel.linux.dev/include"
+export CPPFLAGS="${CPPFLAGS}"
 export CFLAGS="$CPPFLAGS"
 
 CONFOPTS=(
@@ -37,7 +36,7 @@ CONFOPTS=(
 	--enable-tools
 	--enable-curl
 
-	--disable-guest-agent
+	--enable-guest-agent
 	--disable-werror
 	--disable-gcrypt
 	--enable-malloc=jemalloc
@@ -64,6 +63,7 @@ CONFOPTS=(
 	--enable-vhost-user
 	--enable-vhost-vdpa
 	--enable-crypto-afalg
+	--enable-libiscsi
 	--enable-vnc
 	--audio-drv-list="alsa,pa,sdl"
 	--enable-libpmem
