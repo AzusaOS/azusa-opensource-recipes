@@ -23,7 +23,7 @@ callconf --prefix=/pkg/main/${PKG}.core.${PVRF} --infodir=/pkg/main/${PKG}.doc.$
 --with-pkgversion="Azusa gcc $PVRF" --with-bugurl=https://github.com/AzusaOS/azusa-opensource-recipes/issues \
 --libdir=/pkg/main/${PKG}.libs.${PVRF}/lib$LIB_SUFFIX --with-slibdir=/pkg/main/${PKG}.libs.${PVRF}/lib$LIB_SUFFIX \
 --with-gxx-include-dir=/pkg/main/${PKG}.dev.${PVRF}/include/c++ --with-sysroot=/pkg/main/sys-libs.glibc.dev.${OS}.${ARCH} \
---with-gcc-major-version-only \
+--with-gcc-major-version-only --disable-fixincludes \
 --enable-languages=all --disable-multilib --disable-bootstrap --disable-libmpx --with-system-zlib \
 --enable-obsolete --enable-secureplt --disable-werror --enable-nls --without-included-gettext --disable-libunwind-exceptions \
 --enable-esp --enable-libstdcxx-time --with-build-config=bootstrap-lto --disable-libstdcxx-pch --enable-__cxa_atexit --enable-clocale=gnu \
