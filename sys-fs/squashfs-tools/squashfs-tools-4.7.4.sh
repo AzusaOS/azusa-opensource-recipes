@@ -6,7 +6,7 @@ acheck
 
 cd "${P}/squashfs-tools"
 
-importpkg zlib
+importpkg zlib dev-libs/lzo app-arch/lz4 app-arch/xz app-arch/zstd
 
 make
 make install INSTALL_DIR="${D}/pkg/main/${PKG}.core.${PVRF}/bin"

@@ -153,7 +153,7 @@ download() {
 
 	if [ -f "$HOME/.aws/credentials" ]; then
 		# upload if possible to aws
-		aws s3 cp "$BN" "s3://azusa-pkg/src/main/${CATEGORY}/${PN}/${BN}"
+		aws --profile cf s3 cp "$BN" "s3://azusa/src/main/${CATEGORY}/${PN}/${BN}"
 	fi
 }
 
