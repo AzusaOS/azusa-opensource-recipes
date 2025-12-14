@@ -16,6 +16,6 @@ acheck
 
 cd "${T}"
 
-docmake
+docmake -DGGML_CUDA=ON
 
 finalize
