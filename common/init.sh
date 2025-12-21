@@ -778,3 +778,7 @@ dodoc() {
 	mkdir -p "${D}/pkg/main/${PKG}.doc.${PVRF}/doc"
 	cp -v -a --target-directory="${D}/pkg/main/${PKG}.doc.${PVRF}/doc" "$@"
 }
+
+ver_cut() {
+	echo "$PV" | cut -d. -f"$1"
+}

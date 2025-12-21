@@ -34,7 +34,7 @@ fetchgit() {
 		# include also .git repo so we archive the whole history
 		tar cJf "$BN" "${gitbase}-${tag}"
 		# upload if possible to aws
-		aws s3 cp "$BN" "s3://azusa-pkg/src/main/${PKG/.//}/${BN}"
+		aws --profile cf s3 cp "$BN" "s3://azusa/src/main/${PKG/.//}/${BN}"
 	fi
 }
 
@@ -89,6 +89,6 @@ fetchgitbranch() {
 		# include also .git repo so we archive the whole history
 		tar cJf "$BN" "$gitdir"
 		# upload if possible to aws
-		aws s3 cp "$BN" "s3://azusa-pkg/src/main/${PKG/.//}/${BN}"
+		aws --profile cf s3 cp "$BN" "s3://azusa/src/main/${PKG/.//}/${BN}"
 	fi
 }
