@@ -554,6 +554,11 @@ fetchgit() {
 	fetchgit "$@" || return $?
 }
 
+setjava() {
+	inherit java
+	setjava "$@" || return $?
+}
+
 importcmakepkg() {
 	local PKGNAME="$1"
 	local PKGVARNAME="$2"

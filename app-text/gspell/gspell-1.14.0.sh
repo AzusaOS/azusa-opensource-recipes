@@ -1,0 +1,13 @@
+#!/bin/sh
+source "../../common/init.sh"
+
+get https://ftp.gnome.org/pub/gnome/sources/gspell/${PV%.*}/${P}.tar.xz
+acheck
+
+cd "${T}"
+
+importpkg app-text/aspell zlib
+
+domeson
+
+finalize
