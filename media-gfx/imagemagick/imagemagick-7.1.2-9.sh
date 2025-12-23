@@ -16,4 +16,7 @@ ln -s /pkg/main/sys-devel.libtool.libs/lib$LIB_SUFFIX/libltdl.la /usr/lib$LIB_SU
 make
 make install DESTDIR="${D}"
 
+KEEP_LA_FILES=1
+find "${D}" -name '*.la' -exec sed -i -e "/^dependency_libs/s:=.*:='':" {} +
+
 finalize

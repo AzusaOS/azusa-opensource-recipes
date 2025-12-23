@@ -186,7 +186,9 @@ org_movelib() {
 	echo "Fixing libs..."
 	# remove any .la file
 	# see: https://wiki.gentoo.org/wiki/Project:Quality_Assurance/Handling_Libtool_Archives
-	find "${D}" -name '*.la' -delete
+	if [ "$KEEP_LA_FILES" = "" ]; then
+		find "${D}" -name '*.la' -delete
+	fi
 
 	# ensure lib dirs are in libs and not core
 	for foo in lib lib32 lib64; do
