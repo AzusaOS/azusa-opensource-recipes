@@ -93,7 +93,23 @@ for GOARCH in $TGT; do
 
 		source files/env.sh
 
-		make -C "$KDIR" prepare
+		# resolve new config options: prefer m over n for hardware drivers etc
+		for pass in `seq 1 3`; do
+			make -C "$KDIR" listnewconfig | while read foo; do
+				case "${foo: -1}" in
+				n)
+					echo "Attempting to set ${foo:0:-2}=m"
+					(cd "$KDIR"; ./source/scripts/config -m "${foo:0:-2}" )
+					;;
+				y)
+					echo "Setting ${foo:0:-2}=y"
+					(cd "$KDIR"; ./source/scripts/config -e "${foo:0:-2}" )
+					;;
+				esac
+			done
+		done
+
+		make -C "$KDIR" olddefconfig
 
 		# ensure base options
 		(cd "$KDIR"; ./source/scripts/config --set-str LOCALVERSION "-azusa" --enable LOCALVERSION_AUTO --set-str DEFAULT_HOSTNAME "localhost")
