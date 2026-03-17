@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # script to build a root directory for Azusa
 
@@ -6,7 +6,7 @@
 
 BASE="$1"
 
-if [ x"$BASE" = x -o ! -d "$BASE" ]; then
+if [ x"$BASE" = x ] || [ ! -d "$BASE" ]; then
 	echo "Usage: $0 directory"
 	exit 1
 fi
@@ -22,7 +22,9 @@ chmod 01777 "$BASE/tmp" "$BASE/var/tmp"
 chmod 0750 "$BASE/root"
 
 # configure /var
-mkdir -p $BASE/var/{log,mail,spool,cache,lib/{color,misc,locate},lock}
+for d in log mail spool cache lib/color lib/misc lib/locate lock; do
+	mkdir -p "$BASE/var/$d"
+done
 
 # TODO multilib: limit lib64 to x86_64
 for foo in bin sbin lib lib32 lib64; do
@@ -44,17 +46,23 @@ for foo in ld.so.cache ld.so.conf; do
 	ln -snf "/pkg/main/azusa.ldso.data.linux.__ARCH__/etc/$foo" "$BASE/etc/$foo"
 done
 
-ln -snfT /pkg/main/azusa.symlinks.core.linux.__ARCH__/pkgconfig "$BASE/usr/share/pkgconfig"
-ln -snfT /pkg/main/azusa.symlinks.core.linux.__ARCH__/share/gir-1.0 "$BASE/usr/share/gir-1.0"
-ln -snfT /pkg/main/azusa.symlinks.core.linux.__ARCH__/share/dbus-1 "$BASE/usr/share/dbus-1"
-ln -snfT /pkg/main/x11-misc.shared-mime-info.core.linux.__ARCH__/share/mime "$BASE/usr/share/mime"
-ln -snfT /pkg/main/azusa.fontcache.data.symlinks.linux.__ARCH__ "$BASE/usr/share/fonts"
-ln -snfT /pkg/main/azusa.fontcache.data.cache.linux.__ARCH__/fontconfig "$BASE/var/cache/fontconfig"
+rm -f "$BASE/usr/share/pkgconfig"
+ln -snf /pkg/main/azusa.symlinks.core.linux.__ARCH__/pkgconfig "$BASE/usr/share/pkgconfig"
+rm -f "$BASE/usr/share/gir-1.0"
+ln -snf /pkg/main/azusa.symlinks.core.linux.__ARCH__/share/gir-1.0 "$BASE/usr/share/gir-1.0"
+rm -f "$BASE/usr/share/dbus-1"
+ln -snf /pkg/main/azusa.symlinks.core.linux.__ARCH__/share/dbus-1 "$BASE/usr/share/dbus-1"
+rm -f "$BASE/usr/share/mime"
+ln -snf /pkg/main/x11-misc.shared-mime-info.core.linux.__ARCH__/share/mime "$BASE/usr/share/mime"
+rm -f "$BASE/usr/share/fonts"
+ln -snf /pkg/main/azusa.fontcache.data.symlinks.linux.__ARCH__ "$BASE/usr/share/fonts"
+rm -f "$BASE/var/cache/fontconfig"
+ln -snf /pkg/main/azusa.fontcache.data.cache.linux.__ARCH__/fontconfig "$BASE/var/cache/fontconfig"
 
 # install apkg
-cp -fT /pkg/main/azusa.apkg.core.linux.__ARCH__/apkg "$BASE/usr/azusa/apkg"
-cp -fT /pkg/main/azusa.init.core.linux.__ARCH__/init "$BASE/usr/azusa/azusa-init"
-cp -fT /pkg/main/sys-apps.busybox.core.linux.__ARCH__/bin/busybox "$BASE/usr/azusa/busybox"
+cp -f /pkg/main/azusa.apkg.core.linux.__ARCH__/apkg "$BASE/usr/azusa/apkg"
+cp -f /pkg/main/azusa.init.core.linux.__ARCH__/init "$BASE/usr/azusa/azusa-init"
+cp -f /pkg/main/sys-apps.busybox.core.linux.__ARCH__/bin/busybox "$BASE/usr/azusa/busybox"
 
 # initialize dev
 if [ "$(id -u)" -eq 0 ]; then
@@ -66,13 +74,15 @@ if [ "$(id -u)" -eq 0 ]; then
 	mknod -m 666 "$BASE/dev/fuse" c 10 229
 	mknod -m 444 "$BASE/dev/random" c 1 8
 	mknod -m 444 "$BASE/dev/urandom" c 1 9
-	chown root:tty $BASE/dev/{console,ptmx,tty}
+	chown root:tty "$BASE/dev/console" "$BASE/dev/ptmx" "$BASE/dev/tty"
 else
 	echo "Not populating /dev (please run as root)"
 fi
 
 # populate /etc
-find /pkg/main/azusa.baselayout.core.linux.__ARCH__/ '(' -type f -o -type l ')' -printf '%P\n' | while read foo; do
+BASELAYOUT="/pkg/main/azusa.baselayout.core.linux.__ARCH__"
+find "$BASELAYOUT/" '(' -type f -o -type l ')' | while read foo; do
+	foo="${foo#$BASELAYOUT/}"
 	if [ ! -f "$BASE/$foo" ]; then
 		# file is missing, copy it. But first...
 		foo_dir=`dirname "$foo"`
@@ -81,7 +91,7 @@ find /pkg/main/azusa.baselayout.core.linux.__ARCH__/ '(' -type f -o -type l ')' 
 			mkdir -p "$BASE/$foo_dir"
 		fi
 		# then copy
-		cp -a "/pkg/main/azusa.baselayout.core.linux.__ARCH__/$foo" "$BASE/$foo"
+		cp -a "$BASELAYOUT/$foo" "$BASE/$foo"
 	fi
 done
 
@@ -94,7 +104,7 @@ fi
 chmod 0600 "$BASE/etc/shadow"
 
 # touch stuff
-touch "$BASE/var/run/utmp" "$BASE/var/log/"{btmp,lastlog,wtmp}
+touch "$BASE/var/run/utmp" "$BASE/var/log/btmp" "$BASE/var/log/lastlog" "$BASE/var/log/wtmp"
 chmod 664 "$BASE/var/run/utmp" "$BASE/var/log/lastlog"
 if [ "$(id -u)" -eq 0 ]; then
 	chgrp utmp "$BASE/var/run/utmp" "$BASE/var/log/lastlog"
