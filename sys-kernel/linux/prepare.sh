@@ -15,11 +15,16 @@ for GOARCH in $TGT; do
 		KDIR=`mktemp -d -t lk-XXXXXXXXXX`
 		echo "include /pkg/main/sys-kernel.linux.src.$KVER.linux.any/Makefile" >"$KDIR/Makefile"
 
-		# find best config
+		# find best config (sort -V for proper version ordering, pick highest <= KVER)
 		BEST=""
-		for foo in files/config-*-$GOARCH; do
-			if [ -f $foo ]; then
-				BEST="$foo"
+		for foo in $(printf '%s\n' files/config-*-$GOARCH | sort -V); do
+			if [ -f "$foo" ]; then
+				# extract version from filename (e.g. files/config-6.12.44-amd64 -> 6.12.44)
+				fver=$(echo "$foo" | sed 's/.*config-\(.*\)-'$GOARCH'/\1/')
+				# only use configs with version <= target
+				if [ "$(printf '%s\n%s\n' "$fver" "$KVER" | sort -V | tail -1)" = "$KVER" ]; then
+					BEST="$foo"
+				fi
 			fi
 		done
 		if [ -f "files/config-$BVER-$GOARCH" ]; then
@@ -80,7 +85,7 @@ for GOARCH in $TGT; do
 			esac
 		done
 
-		make -C "$KDIR" menuconfig
+		#make -C "$KDIR" menuconfig
 		cp -v "$KDIR/.config" "files/config-$KVER-$GOARCH"
 
 		rm -fr "$KDIR"
