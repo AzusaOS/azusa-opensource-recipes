@@ -1,10 +1,30 @@
 versions:
     list:
-        - "5.1"
-        - 5.1.16
-        - "5.2.15"
-    stable: "5.2.15"
+        - "5.2.37"
+        - "5.3.p9"
+    stable: "5.3.p9"
 build:
+    - version: '*.p*'
+      import:
+        - readline
+      source:
+        - https://ftp.gnu.org/gnu/${PN}/${PN}-${PV%%.p*}.tar.gz
+      source_script:
+        - |
+          BASE=${PV%%.p*}
+          PLEVEL=${PV##*.p}
+          COMPACT=$(echo "$BASE" | tr -d '.')
+          for i in $(seq 1 $PLEVEL); do
+            printf "https://ftp.gnu.org/gnu/%s/%s-%s-patches/%s%s-%03d\n" "$PN" "$PN" "$BASE" "$PN" "$COMPACT" "$i"
+          done
+      engine: autoconf
+      configure_pre:
+        - for f in "${WORKDIR}/${PN}"[0-9]*-[0-9]*; do [ -f "$f" ] && patch -p0 -d "${S}" -i "$f"; done
+      arguments:
+        - --without-bash-malloc
+        - --with-installed-readline
+      install_post:
+        - ln -snf bash "${D}/pkg/main/${PKG}.core.${PVRF}/bin/sh"
     - version: '*'
       import:
         - readline
