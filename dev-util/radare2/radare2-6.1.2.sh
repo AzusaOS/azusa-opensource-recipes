@@ -1,23 +1,25 @@
 #!/bin/sh
 source "../../common/init.sh"
 
-#BINS_COMMIT=87ab82cc96e83e02f044c0c4111ade2a65576c60
-
 get https://github.com/radareorg/radare2/archive/${PV}.tar.gz "${P}.tar.gz"
-eval $(cat "${S}/libr/arch/p/arm/v35/Makefile" | grep '^ARCH_ARM')
-get https://github.com/radareorg/vector35-arch-arm64/archive/${ARCH_ARM64_COMMIT}.tar.gz "${PN}-vector35-arm64-${ARCH_ARM64_COMMIT:0:7}.tar.gz"
-get https://github.com/radareorg/vector35-arch-armv7/archive/${ARCH_ARMV7_COMMIT}.tar.gz "${PN}-vector35-armv7-${ARCH_ARMV7_COMMIT:0:7}.tar.gz"
+cd "${S}/subprojects"
+for foo in capstone-v5 qjs sdb otezip; do
+	url="$(cat "$foo.wrap" | grep '^url =' | sed -e 's/.*= *//')"
+	rev="$(cat "$foo.wrap" | grep '^revision =' | sed -e 's/.*= *//')"
+	get "$(echo "$url" | sed -e 's/\.git$//')/archive/${rev}.tar.gz" "${P}-${foo}.tar.gz"
+	mv -v "$(basename "$url" .git)-$rev" $foo
+done
 
-cd "${S}"
-apatch "$FILESDIR/radare2-5.8.2-vector35.patch"
-mv "${WORKDIR}/vector35-arch-arm64-${ARCH_ARM64_COMMIT}" libr/arch/p/arm/v35/arch-arm64
-mv "${WORKDIR}/vector35-arch-armv7-${ARCH_ARMV7_COMMIT}" libr/arch/p/arm/v35/arch-armv7
 acheck
 
-cd "${T}"
+cd "${S}"
 
 importpkg zlib dev-libs/xxhash dev-libs/capstone
 
-domeson -Duse_sys_capstone=true
+#domeson -Duse_sys_capstone=true -Duse_sys_lz4=true -Duse_sys_magic=true -Duse_sys_xxhash=true -Duse_ssl=true -Duse_sys_zip=true
+doconf --with-syscapstone --with-syslz4 --with-sysmagic --with-sysxxhash --with-syszip --with-ssl
+
+make -j"$NPROC"
+make install DESTDIR="${D}"
 
 finalize
