@@ -1,0 +1,17 @@
+versions:
+    list:
+        - 3.3
+    stable: 3.3
+build:
+    - version: '*'
+      source:
+        - https://github.com/fonic/${PN}/archive/refs/tags/${PN}-v${PV}.tar.gz -> ${P}.tar.gz
+      engine: none
+      env:
+        - "S=${WORKDIR}/${PN}-${PN}-v${PV}"
+      install_post:
+        - mkdir -p "${D}/pkg/main/${PKG}.core.${PVRF}/bin"
+        - mkdir -p "${D}/pkg/main/${PKG}.core.${PVRF}/lib/wcdatool/modules"
+        - install -m 755 Wcdatool/wcdatool.py "${D}/pkg/main/${PKG}.core.${PVRF}/lib/wcdatool/wcdatool.py"
+        - install -m 644 Wcdatool/modules/*.py "${D}/pkg/main/${PKG}.core.${PVRF}/lib/wcdatool/modules/"
+        - ln -s ../lib/wcdatool/wcdatool.py "${D}/pkg/main/${PKG}.core.${PVRF}/bin/wcdatool"

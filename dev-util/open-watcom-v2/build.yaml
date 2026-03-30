@@ -1,0 +1,24 @@
+versions:
+    list:
+        - 0.0.20260301
+    stable: 0.0.20260301
+build:
+    - version: '*'
+      source:
+        - https://github.com/open-watcom/open-watcom-v2/archive/refs/tags/2026-03-01-Build.tar.gz -> ${P}.tar.gz
+      engine: none
+      env:
+        - "S=${WORKDIR}/open-watcom-v2-2026-03-01-Build"
+      compile_post:
+        - unset SOURCE_DATE_EPOCH && export OWROOT="$S" OWTOOLS=GCC OWDOCBUILD=0 OWDISTRBUILD=0 OWGUINOBUILD=1 CC=gcc CXX=g++ && . "$S/cmnvars.sh" && cd "$S" && mkdir -p build/$OWOBJDIR && cd bld/wmake && mkdir -p $OWOBJDIR && cd $OWOBJDIR && make CC=gcc -f ../posmake TARGETDEF=-D__LINUX__ 2>&1
+        - unset SOURCE_DATE_EPOCH && export OWROOT="$S" OWTOOLS=GCC OWDOCBUILD=0 OWDISTRBUILD=0 OWGUINOBUILD=1 CC=gcc CXX=g++ && . "$S/cmnvars.sh" && cd "$S/bld/builder" && mkdir -p $OWOBJDIR && cd $OWOBJDIR && $OWROOT/build/$OWOBJDIR/wmake -f ../preboot 2>&1
+        - unset SOURCE_DATE_EPOCH && export OWROOT="$S" OWTOOLS=GCC OWDOCBUILD=0 OWDISTRBUILD=0 OWGUINOBUILD=1 CC=gcc CXX=g++ && . "$S/cmnvars.sh" && cd "$S/bld" && builder boot 2>&1
+        - unset SOURCE_DATE_EPOCH && export OWROOT="$S" OWTOOLS=GCC OWDOCBUILD=0 OWDISTRBUILD=0 OWGUINOBUILD=1 CC=gcc CXX=g++ && . "$S/cmnvars.sh" && cd "$S/bld" && builder rel 2>&1
+      install_post:
+        - mkdir -p "${D}/pkg/main/${PKG}.core.${PVRF}/bin"
+        - install -m 755 rel/binl64/* "${D}/pkg/main/${PKG}.core.${PVRF}/bin/" || true
+        - rm -f "${D}/pkg/main/${PKG}.core.${PVRF}/bin/"*.sym "${D}/pkg/main/${PKG}.core.${PVRF}/bin/"*.lnk "${D}/pkg/main/${PKG}.core.${PVRF}/bin/"*.cfg
+        - mkdir -p "${D}/pkg/main/${PKG}.core.${PVRF}/share/watcom"
+        - cp -a rel/h "${D}/pkg/main/${PKG}.core.${PVRF}/share/watcom/" 2>/dev/null || true
+        - cp -a rel/lib286 rel/lib386 "${D}/pkg/main/${PKG}.core.${PVRF}/share/watcom/" 2>/dev/null || true
+        - cp -a rel/eddat "${D}/pkg/main/${PKG}.core.${PVRF}/share/watcom/" 2>/dev/null || true
