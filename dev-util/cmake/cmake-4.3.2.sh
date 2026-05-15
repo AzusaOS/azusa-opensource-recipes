@@ -5,7 +5,7 @@ get https://github.com/Kitware/CMake/releases/download/v${PV}/${P}.tar.gz
 
 cd "${S}"
 
-apatch "$FILESDIR/cmake-3.22.2-use-absolute-paths.patch"
+apatch "$FILESDIR/cmake-4.3.2-use-absolute-paths.patch"
 
 acheck
 

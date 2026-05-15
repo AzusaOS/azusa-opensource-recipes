@@ -9,9 +9,15 @@ cd "${S}"
 apatch \
 	"$FILESDIR/litecoin-0.21.3_boost_copy_options.patch" \
 	"$FILESDIR/litecoin-0.21.3_boost_directory_iterator.patch" \
-	"$FILESDIR/litecoin-0.21.3_secp256k1_extrakeys_fix.patch"
+	"$FILESDIR/litecoin-0.21.3_secp256k1_extrakeys_fix.patch" \
+	"$FILESDIR/litecoin-0.21.5.5_boost_system_header_only.patch"
 
 aautoreconf
+
+# Boost::System is header-only since Boost 1.69 and the stub library
+# is gone in 1.89. Defensive fixup in case the m4 patch did not propagate
+# into the generated configure (e.g. when aclocal pulled the system copy).
+sed -i 's|as_fn_error \$? "Could not find a version of the Boost::System library!".*|:|' configure
 
 cd "${T}"
 
