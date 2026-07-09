@@ -657,7 +657,13 @@ importpkg() {
 		done
 	fi
 
+	# Strip a leading ':' from the include path vars. Built by appending
+	# ":path", they start with an empty element when the var was initially
+	# unset, and gcc reads an empty element as the current directory - which
+	# would let a package's local headers shadow system ones (e.g. screen's
+	# own pty.h shadowing <pty.h>, hiding openpty()).
 	export C_INCLUDE_PATH="${C_INCLUDE_PATH#:}"
+	export CPATH="${CPATH#:}"
 }
 
 # azusa check
