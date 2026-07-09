@@ -5,7 +5,7 @@ set -e
 cd "$(dirname $0)/.."
 AZUSA_RECIPES_ROOT=`pwd`
 
-# Compile a given package ($1) within a jail
+# Compile a given package ($1) inside a rootless bubblewrap sandbox
 PKG="$1"
 
 if [ -f "$PKG" ]; then
@@ -36,10 +36,8 @@ rsync -a "$AZUSA_RECIPES_ROOT"/ "$tmp_dir/root/azusa-opensource-recipes/"
 
 echo "Build..."
 
-chroot "$tmp_dir" /bin/bash -c "cd /root/azusa-opensource-recipes/${PKG_DIR}; ./${PKG_SCRIPT}"
-
-mkdir /tmp/apkg || true
-mv -v "$tmp_dir/tmp/apkg"/* /tmp/apkg
-
-# fix rights on /tmp/apkg to make sure user can upload
-chown 1000 -R /tmp/apkg
+# packages are written straight to the host $APKG_OUT (bound at /tmp/apkg) and,
+# thanks to the uid mapping, already owned by the invoking user - so there is no
+# post-build move or chown to do.
+run_in_sandbox --chdir "/root/azusa-opensource-recipes/${PKG_DIR}" \
+	/bin/bash -c "dbus-uuidgen --ensure=/etc/machine-id 2>/dev/null || true; exec ./${PKG_SCRIPT}"
