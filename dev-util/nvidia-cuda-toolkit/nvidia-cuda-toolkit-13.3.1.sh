@@ -18,9 +18,13 @@ dd ibs="$skip_bytes" skip=1 if="$SRCFILE" of="${SRCFILE}.arch"
 # let tar find out the right format
 tar --no-same-owner -xf "${SRCFILE}.arch"
 
+# CUDA 13 renamed cuda_cccl -> cccl, dropped cuda_demo_suite, and split the
+# nvcc runtime-compilation headers (crt/) into cuda_crt and libculibos into
+# cuda_culibos; libnvfatbin/libnvptxcompiler are the newer runtime libs.
 builddirs=(
-	builds/cuda_{cccl,cudart,cuobjdump,cuxxfilt,demo_suite,nvcc,nvdisasm,nvml_dev,nvprune,nvrtc,nvtx,opencl}
-	builds/lib{cublas,cufft,cufile,curand,cusolver,cusparse,npp,nvjitlink,nvjpeg}
+	builds/cccl
+	builds/cuda_{crt,cudart,culibos,cuobjdump,cuxxfilt,nvcc,nvdisasm,nvml_dev,nvprune,nvrtc,nvtx,opencl}
+	builds/lib{cublas,cufft,cufile,curand,cusolver,cusparse,npp,nvfatbin,nvjitlink,nvjpeg,nvptxcompiler}
 	builds/nvidia_fs
 )
 
@@ -39,8 +43,9 @@ done
 cp builds/EULA.txt "${D}/pkg/main/${PKG}.core.${PVRF}/"
 
 echo "Installing nvvm"
-chmod +x builds/cuda_nvcc/nvvm/bin/cicc
-rsync -av builds/cuda_nvcc/nvvm "${D}/pkg/main/${PKG}.core.${PVRF}/"
+# CUDA 13 moved nvvm out of cuda_nvcc into its own libnvvm component
+chmod +x builds/libnvvm/nvvm/bin/cicc
+rsync -av builds/libnvvm/nvvm "${D}/pkg/main/${PKG}.core.${PVRF}/"
 
 echo "Installing nvml"
 rsync -av builds/cuda_nvml_dev/nvml "${D}/pkg/main/${PKG}.core.${PVRF}/"
