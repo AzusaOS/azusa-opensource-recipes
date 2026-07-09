@@ -678,9 +678,10 @@ envcheck() {
 	fi
 	# check if env is sane for building, and perform stuff
 	if [ ! -d /.pkg-main-rw ]; then
-		echo "This needs to be built in Azusa Build env:"
-		echo "$ROOTDIR/common/build.sh ${CATEGORY}/${PN}/${PF}.sh"
-		exit
+		echo "This recipe must be built inside the sandbox. Don't run it"
+		echo "directly; from the recipes root run (no root needed):"
+		echo "    ./build.sh ${CATEGORY}/${PN}"
+		exit 1
 	fi
 
 	# TODO check if /.pkg-main-rw is indeed empty, etc
