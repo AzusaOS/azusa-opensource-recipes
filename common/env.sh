@@ -103,6 +103,7 @@ run_in_sandbox() {
 	unshare --user --map-auto --map-root-user --setgroups allow \
 		"$BWRAP" \
 		--unshare-pid --unshare-ipc --unshare-uts --die-with-parent \
+		--setenv HOME /root \
 		--bind "$tmp_dir" / \
 		--overlay-src /pkg/main \
 		--overlay "$tmp_dir/.pkg-main-rw" "$tmp_dir/.pkg-main-work" /pkg/main \
