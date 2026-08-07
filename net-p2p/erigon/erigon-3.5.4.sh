@@ -15,8 +15,7 @@ make erigon
 make install
 
 mv -v ./build/dist/erigon "${D}/pkg/main/${PKG}.core.${PVRF}/bin"
-mkdir -pv "${D}/pkg/main/${PKG}.core.${PVRF}/libexec"
-mv -v ./build/dist/libsilkworm_capi.so "${D}/pkg/main/${PKG}.core.${PVRF}/libexec"
-patchelf --add-rpath '$ORIGIN/../libexec' "${D}/pkg/main/${PKG}.core.${PVRF}/bin/erigon"
+# erigon 3.5 dropped the bundled silkworm C API library (no more
+# libsilkworm_capi.so), so there is nothing extra to install/rpath here.
 
 finalize
