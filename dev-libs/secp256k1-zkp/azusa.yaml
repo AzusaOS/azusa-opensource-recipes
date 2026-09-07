@@ -1,0 +1,3 @@
+description: Experimental fork of libsecp256k1 with zero-knowledge modules (rangeproof, surjectionproof, generator, whitelist, musig, ecdsa-adaptor, ...)
+homepage: https://github.com/BlockstreamResearch/secp256k1-zkp
+license: MIT
