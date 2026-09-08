@@ -6,10 +6,6 @@ acheck
 
 cd "${S}"
 
-# src/currency_core/genesis.h:15:5: error: ‘uint64_t’ does not name a type
-# src/currency_core/genesis.h:9:1: note: ‘uint64_t’ is defined in header ‘<cstdint>’; did you forget to ‘#include <cstdint>’?
-sed -i -e '/#include <string>/a #include <cstdint>' src/currency_core/genesis.h src/wallet/plain_wallet_api.h
-
 # libmdbx's mdbx_memory_barrier() guards a clang-only __c11_atomic_thread_fence
 # builtin with __has_extension(c_atomic). gcc 14+ now implements __has_extension
 # and answers yes, but has no such builtin -> implicit-declaration error. Require
