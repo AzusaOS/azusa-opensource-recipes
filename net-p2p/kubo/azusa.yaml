@@ -1,0 +1,3 @@
+description: IPFS (InterPlanetary File System) node - Kubo, the reference Go implementation
+homepage: https://ipfs.tech/ https://github.com/ipfs/kubo
+license: MIT Apache-2.0
