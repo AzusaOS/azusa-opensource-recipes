@@ -1,0 +1,8 @@
+files:
+    v2.12.0.tar.gz:
+        size: 207976
+        added: 2026-09-27T06:35:36.472723753+10:00
+        hashes:
+            sha1: 22d804ac63fd21e721032f5ec4b3640b13b6699b
+            sha3-256: 706e222feeb9fc3a9f611f4e469418e3cda41deb2767ffd4938a9f9ea84261a5
+            sha256: f564011d38b2888d583d510b08e69ffa15aa117155db1b9b49ef1dfe1fa25111
