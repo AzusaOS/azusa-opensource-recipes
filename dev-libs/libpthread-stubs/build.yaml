@@ -1,0 +1,9 @@
+versions:
+    list:
+        - "0.5"
+    stable: "0.5"
+build:
+    - version: '*'
+      source:
+        - https://xcb.freedesktop.org/dist/libpthread-stubs-0.5.tar.gz
+      engine: autoconf

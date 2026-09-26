@@ -1,0 +1,8 @@
+files:
+    libpthread-stubs-0.5.tar.gz:
+        size: 74938
+        added: 2026-09-27T06:28:03.967068751+10:00
+        hashes:
+            sha1: b15bbcb6b8354c12e4cc47a8c2e788daa374ee04
+            sha3-256: b6e41065edb270e8cf206c2cd1fc5cd8e70655323fb619a1c7c7723709deb2c8
+            sha256: 593196cc746173d1e25cb54a93a87fd749952df68699aab7e02c085530e87747
