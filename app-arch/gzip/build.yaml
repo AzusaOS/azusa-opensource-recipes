@@ -1,7 +1,8 @@
 versions:
     list:
+        - "1.15"
         - "1.12"
-    stable: "1.12"
+    stable: "1.15"
 build:
     - version: '*'
       source:
