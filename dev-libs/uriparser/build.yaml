@@ -1,0 +1,13 @@
+versions:
+    list:
+        - "1.0.2"
+    stable: "1.0.2"
+build:
+    - version: '*'
+      source:
+        - https://github.com/uriparser/uriparser/releases/download/uriparser-1.0.2/uriparser-1.0.2.tar.bz2
+      engine: cmake
+      arguments:
+        - -DBUILD_SHARED_LIBS=YES
+        - -DURIPARSER_BUILD_TESTS=OFF
+        - -DURIPARSER_BUILD_DOCS=OFF
