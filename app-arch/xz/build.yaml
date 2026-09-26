@@ -1,7 +1,7 @@
 versions:
     list:
         - 5.2.5
-    stable: 5.2.5
+    stable: "5.2.5"
 build:
     - version: '*'
       source:
