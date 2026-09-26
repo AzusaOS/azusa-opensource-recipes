@@ -1,7 +1,7 @@
 #!/bin/sh
 source "../../common/init.sh"
 
-get http://downloads.xiph.org/releases/ogg/${P}.tar.gz
+get https://downloads.xiph.org/releases/ogg/${P}.tar.gz
 acheck
 
 cd "${T}"
