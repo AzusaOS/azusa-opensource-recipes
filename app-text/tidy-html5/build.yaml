@@ -1,0 +1,13 @@
+versions:
+    list:
+        - "5.8.0"
+    stable: "5.8.0"
+build:
+    - version: '*'
+      source:
+        - https://github.com/htacg/tidy-html5/archive/5.8.0/tidy-html5-5.8.0.tar.gz
+      engine: cmake
+      arguments:
+        - -DBUILD_SHARED_LIBS=YES
+        - -DBUILD_TAB2SPACE=ON
+        - -DCMAKE_POLICY_VERSION_MINIMUM=3.5
