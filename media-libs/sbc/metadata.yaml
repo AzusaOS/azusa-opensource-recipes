@@ -1,0 +1,8 @@
+files:
+    sbc-2.2.tar.xz:
+        size: 277348
+        added: 2026-09-27T06:24:33.078244796+10:00
+        hashes:
+            sha1: 97fceb5b65d8708fd844671eb4a079bdba11777d
+            sha3-256: 6292de909ad4cad7043929a19e1ed583bf94ac3c59ef99ba4c3ea1208da7d505
+            sha256: a1ada76ef35e5af9c2fbd063754dc9e37a8d989417c6eb1ecebb089b1383ae9e
