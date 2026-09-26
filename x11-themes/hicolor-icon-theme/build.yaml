@@ -1,0 +1,9 @@
+versions:
+    list:
+        - "0.18"
+    stable: "0.18"
+build:
+    - version: '*'
+      source:
+        - https://icon-theme.freedesktop.org/releases/hicolor-icon-theme-${PV}.tar.xz
+      engine: meson
