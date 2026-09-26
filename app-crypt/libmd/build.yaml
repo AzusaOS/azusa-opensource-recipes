@@ -1,0 +1,9 @@
+versions:
+    list:
+        - "1.2.0"
+    stable: "1.2.0"
+build:
+    - version: '*'
+      source:
+        - https://archive.hadrons.org/software/libmd/${P}.tar.xz
+      engine: autoconf

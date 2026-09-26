@@ -1,0 +1,8 @@
+files:
+    libmd-1.2.0.tar.xz:
+        size: 287992
+        added: 2026-09-27T06:05:58.90058476+10:00
+        hashes:
+            sha1: 27fc99e6966a3bf2c61f5d1faca4f11c580eac1d
+            sha3-256: d44b8d69515bb6e0666c95c2e96c596ab64e34ca3e425178252b4563aa24bf59
+            sha256: ac15ffb8430502fbaccdec66c5a82ee0eab0b0f36220df56710feadfeb13d0a0
