@@ -1,0 +1,11 @@
+versions:
+    list:
+        - "2.2"
+    stable: "2.2"
+build:
+    - version: '*'
+      source:
+        - https://www.kernel.org/pub/linux/bluetooth/sbc-${PV}.tar.xz
+      engine: autoconf
+      arguments:
+        - --disable-tester
