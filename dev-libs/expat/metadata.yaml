@@ -1,0 +1,8 @@
+files:
+    expat-2.8.5.tar.bz2:
+        size: 678656
+        added: 2026-09-27T06:16:14.29921882+10:00
+        hashes:
+            sha1: ca9e82e29c172851a080481afedbe3548838b7a6
+            sha3-256: 39c9eee6eb39186b94b11d6db33240f42adc8f5d88133b52ead2131b5a2a7d65
+            sha256: 952c03c33a6b337f12dae7a9b0f9dee86f867550d35c994d6bdaaddd37dc8454

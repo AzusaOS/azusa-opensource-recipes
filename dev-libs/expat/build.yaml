@@ -1,0 +1,9 @@
+versions:
+    list:
+        - "2.8.5"
+    stable: "2.8.5"
+build:
+    - version: '*'
+      source:
+        - https://github.com/libexpat/libexpat/releases/download/R_2_8_5/expat-2.8.5.tar.bz2
+      engine: autoconf
