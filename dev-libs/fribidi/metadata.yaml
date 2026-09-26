@@ -1,0 +1,8 @@
+files:
+    fribidi-1.0.17.tar.xz:
+        size: 1203284
+        added: 2026-09-27T06:11:20.666914169+10:00
+        hashes:
+            sha1: 5531cd571d3300e5ff62159da4dbf1ef271ff8c9
+            sha3-256: 814c3080c3f3a3250c92597edaa09ca6b11cd4fc8936b298831fa27832e30da7
+            sha256: 6949dcde27d41cebad1fd741fcafc36d55a1020d2d872d4a6eb3914caabbada2
