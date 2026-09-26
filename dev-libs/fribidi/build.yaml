@@ -1,0 +1,9 @@
+versions:
+    list:
+        - "1.0.17"
+    stable: "1.0.17"
+build:
+    - version: '*'
+      source:
+        - https://github.com/fribidi/fribidi/releases/download/v${PV}/${P}.tar.xz
+      engine: meson
