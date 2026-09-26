@@ -1,0 +1,15 @@
+files:
+    gzip-1.12.tar.xz:
+        size: 825548
+        added: 2026-09-25T03:16:43.379106994+10:00
+        hashes:
+            sha1: 318107297587818c8f1e1fbb55962f4b2897bc0b
+            sha3-256: a0aabf5d5f2d8de5927b2cd02b85d356c89b3f6d9d4e2c9da2e789e3c4eeec54
+            sha256: ce5e03e519f637e1f814011ace35c4f87b33c0bbabeec35baf5fbd3479e91956
+    gzip-1.15.tar.xz:
+        size: 808900
+        added: 2026-09-27T08:07:26.363759721+10:00
+        hashes:
+            sha1: e40bf2f5f9782ea0e6278fa757e62be56c88ac4a
+            sha3-256: 830c150cf8a09c68e4c52fecc3540f37e3c89e7504e6cc408e479f2f90b7fcc9
+            sha256: 9aa0cc780dec156b8282844833b342ab7cb08c25d2cd9a1869cdd0df31deff48
