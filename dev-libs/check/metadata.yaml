@@ -1,0 +1,8 @@
+files:
+    check-0.15.2.tar.gz:
+        size: 774985
+        added: 2026-09-27T06:17:04.367077086+10:00
+        hashes:
+            sha1: 54e6bae308aedab9a78a0349d839c92fc03bd2db
+            sha3-256: bfb856a68c0ea4d930803f6bd16c1eed38910a231c9e0f0009e69310e35e7a5d
+            sha256: a8de4e0bacfb4d76dd1c618ded263523b53b85d92a146d8835eb1a52932fa20a
