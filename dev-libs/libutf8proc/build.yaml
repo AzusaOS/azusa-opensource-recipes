@@ -1,0 +1,11 @@
+versions:
+    list:
+        - "2.12.0"
+    stable: "2.12.0"
+build:
+    - version: '*'
+      source:
+        - https://github.com/JuliaStrings/utf8proc/archive/refs/tags/v${PV}.tar.gz
+      engine: cmake
+      arguments:
+        - -DBUILD_SHARED_LIBS=YES
