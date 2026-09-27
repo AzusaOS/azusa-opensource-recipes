@@ -1,0 +1,15 @@
+files:
+    libheif-1.12.0.tar.gz:
+        size: 1684355
+        added: 0001-01-01T00:00:00Z
+        hashes:
+            sha1: 7bc8ed78a2946949f137dcd9f86492de99aee2bd
+            sha3-256: fdaa13b435cb2f73059719443a751972f6cb17e4f8233477d4ac9a0b1278141a
+            sha256: e1ac2abb354fdc8ccdca71363ebad7503ad731c84022cf460837f0839e171718
+    libheif-1.23.5.tar.gz:
+        size: 2276803
+        added: 2026-09-27T11:23:30.599015684+10:00
+        hashes:
+            sha1: d360b95c4c5bffe32cee6c01524d365f5fa4676f
+            sha3-256: 3126934c5a9629d75f4e70fe904f75d35e6c04a8c6732014a1a5a16454914ef8
+            sha256: fd9036064c4432f0550d15072ddf34956a248279ee9aeaff0fba3fa0f77d8f1a
