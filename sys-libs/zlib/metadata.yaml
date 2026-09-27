@@ -13,3 +13,10 @@ files:
             sha1: f535367b1a11e2f9ac3bec723fb007fbc0d189e5
             sha3-256: 012a4a5f8977048e6339775e62ac1fc71dc6ebc00ceaff972197e59fa5ecb72b
             sha256: 9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23
+    zlib-1.3.2.tar.gz:
+        size: 1502830
+        added: 2026-09-27T11:03:32.498703478+10:00
+        hashes:
+            sha1: 0097186c2635358f2239c95d559796238c6640d4
+            sha3-256: 451bedbdcd78dec3704df673c976fab25beaef6adb9433fe84665e7bf946e325
+            sha256: bb329a0a2cd0274d05519d61c667c062e06990d72e125ee2dfa8de64f0119d16
