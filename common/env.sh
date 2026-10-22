@@ -25,6 +25,9 @@ fi
 check_rootless_prereqs() {
 	local user uid h f missing
 
+	# real root already has every privilege needed; no id mapping involved
+	[ "$(id -u)" -eq 0 ] && return 0
+
 	for h in newuidmap newgidmap; do
 		if ! command -v "$h" >/dev/null 2>&1; then
 			echo "ERROR: $h not found; rootless id mapping needs it (package: shadow)."
@@ -53,6 +56,14 @@ check_rootless_prereqs() {
 }
 check_rootless_prereqs
 
+# Unprivileged users get a range-mapped user namespace (see run_in_sandbox);
+# real root runs bwrap directly in the initial namespace.
+if [ "$(id -u)" -eq 0 ]; then
+	USERNS_CMD=()
+else
+	USERNS_CMD=(unshare --user --map-auto --map-root-user --setgroups allow)
+fi
+
 tmp_dir=$(mktemp -d -t azusa-XXXXXXXXXX)
 chmod 0755 "$tmp_dir"
 
@@ -80,8 +91,7 @@ cleanuptmp() {
 	# extracted with its archived ownership), which the invoking user cannot
 	# remove directly. Delete from inside a range-mapped user namespace, where
 	# in-namespace root can unlink them; fall back to a plain rm otherwise.
-	unshare --user --map-auto --map-root-user --setgroups allow \
-		rm -fr "$tmp_dir" 2>/dev/null || rm -fr "$tmp_dir" 2>/dev/null || true
+	"${USERNS_CMD[@]}" rm -fr "$tmp_dir" 2>/dev/null || rm -fr "$tmp_dir" 2>/dev/null || true
 }
 trap cleanuptmp EXIT
 
@@ -98,10 +108,11 @@ trap cleanuptmp EXIT
 #
 # Because in-namespace root maps back to the invoking user, packages written to
 # /tmp/apkg come back owned by that user, so no post-build chown is needed.
-# Requires /etc/subuid + /etc/subgid entries for the invoking user.
+# Requires /etc/subuid + /etc/subgid entries for the invoking user. When invoked
+# as real root, the namespace step is skipped (USERNS_CMD is empty) and bwrap
+# runs with root's own privileges.
 run_in_sandbox() {
-	unshare --user --map-auto --map-root-user --setgroups allow \
-		"$BWRAP" \
+	"${USERNS_CMD[@]}" "$BWRAP" \
 		--unshare-pid --unshare-ipc --unshare-uts --die-with-parent \
 		--setenv HOME /root \
 		--bind "$tmp_dir" / \
