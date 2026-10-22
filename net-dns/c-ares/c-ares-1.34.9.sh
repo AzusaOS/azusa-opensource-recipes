@@ -7,7 +7,7 @@ acheck
 cd "${T}"
 
 # configure & build
-doconf
+doconf --disable-tests
 
 make
 make install DESTDIR="${D}"
